@@ -1,0 +1,27 @@
+.genpdfbtn{
+    background-color: rgb(21, 93, 252); 
+}
+
+.cursPointer {
+    cursor: pointer;
+}
+
+.addDoctorBtn {
+    background-color: #00c951;
+}
+
+.closeBtn {
+    background-color: #fb2c36;
+
+}
+.headColor {
+    color: #1447e6;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeInDown {
+  animation: fadeInDown 0.4s ease-in-out;
+}
