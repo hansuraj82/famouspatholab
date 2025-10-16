@@ -1,5 +1,5 @@
 export const CBC_MAIN = [
-  { key: "WHITE CELL COUNT (TC)", range: "4.0-11.0", unit: "/CUMM" },
+  { key: "WHITE CELL COUNT (TC)", range: "4.0-11.0", unit: "] /CUMM" },
   { key: "RBC (RED BLOOD CELLS)", range: "4.00-5.20", unit: "MILLION /CUM" },
   { key: "HEMOGLOBIN", range: "12.0-16.0", unit: "gm/dl" },
   { key: "PLATELET", range: "1.50-3.00", unit: "Lakh/cumm" },
@@ -14,7 +14,7 @@ export const CBC_MAIN = [
 
 //cbc main range for men
 export const CBC_MAIN_FOR_MAN = [
-  { key: "WHITE CELL COUNT (TC)", range: "4.0-11.0", unit: "/CUMM" },
+  { key: "WHITE CELL COUNT (TC)", range: "4.0-11.0", unit: "] /CUMM" },
   { key: "RBC (RED BLOOD CELLS)", range: "4.00-5.50", unit: "MILLION /CUM" },
   { key: "HEMOGLOBIN", range: "12.0-16.0", unit: "gm/dl" },
   { key: "PLATELET", range: "1.50-3.00", unit: "Lakh/cumm" },

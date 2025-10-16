@@ -6,6 +6,8 @@ export function HB_Report_Design(doc, HB_value, y) {
     HB_RANGE.forEach((field) => {
         doc.setFont("Wingdings", "normal").setFontSize(14).setTextColor(255, 0, 0);
         doc.text("", 10, y);
+        let hbSpitVal = HB_value.split("/")
+        HB_value = `${hbSpitVal[0]}gm/${hbSpitVal[1]}`;
 
         doc.setFont("Cambria", "normal").setFontSize(12).setTextColor(0,0,0);
         doc.text(field.key, 17, y);
@@ -20,5 +22,5 @@ export function HB_Report_Design(doc, HB_value, y) {
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
     })
-    return y;
+    return y-2;
 }

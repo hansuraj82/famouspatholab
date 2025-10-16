@@ -13,6 +13,21 @@ import { HeadingLogo, signture } from "../utils/Base64File/Logo.js";
 import { KFT_Design } from "./ReportsDesign/KFT_Report";
 import { Widal_Design } from "./ReportsDesign/WIDAL_Report.js";
 import { S_BILLIRUBIN_Design } from "./ReportsDesign/S_BILLIRUBIN_Report.js";
+import { urineCultureReport } from "./ReportsDesign/urineCultureReport.js";
+import { Sgpt_Design } from "./ReportsDesign/sgpt_Report.js";
+import { Sgot_Design } from "./ReportsDesign/sgot_Report.js";
+import { S_ALKALINE_PHOSHATE_Design } from "./ReportsDesign/S_ALKALINE_PHOSHATE_Report.js";
+import { TotalProtein_Design } from "./ReportsDesign/totalProtein_Report.js";
+import { Albumin_Design } from "./ReportsDesign/albumin_Report.js";
+import { Globulin_Design } from "./ReportsDesign/globulin_Report.js";
+import { Alb_globulin_ratio_Design } from "./ReportsDesign/alb_globulin_ratio_Report.js";
+import { ScreatnineVal_Design } from "./ReportsDesign/sCreattinine_Report.js";
+import { sUrea_Design } from "./ReportsDesign/sUrea_Report.js";
+import { sUricAcid_Design } from "./ReportsDesign/sUricAcid_Report.js";
+import { sChloride_Design } from "./ReportsDesign/sChloride_Report.js";
+import { sPotassium_Design } from "./ReportsDesign/sPotassium.js";
+import { sSodium_Design } from "./ReportsDesign/sSodium_Report.js";
+import { sCalcium_Design } from "./ReportsDesign/sCalcium_Report.js";
 
 
 const generatePdf = ({
@@ -30,7 +45,25 @@ const generatePdf = ({
     LFT_Data,
     KFT_Data,
     widalData,
-    S_BILLIRUBIN_Data
+    S_BILLIRUBIN_Data,
+    cultureType,
+    sensitivityData,
+    testDate,
+    reportDate,
+    sgptVal,
+    sgotVal,
+    S_ALKALINE_PHOSHATE_VAL,
+    totalProteinVal,
+    albuminVal,
+    globulinVal,
+    alb_globulin_ratioVal,
+    screatnineVal,
+    sUreaVal,
+    sUricAcidVal,
+    sChlorideVal,
+    sPotassiumVal,
+    sSodiumVal,
+    sCalciumVal
 }) => {
     const doc = new jsPDF();
     doc.setTextColor(0, 0, 0);
@@ -67,24 +100,25 @@ const generatePdf = ({
 
 
     //doc.text(`: ${age.year} YEARS / ${gender}`, patientNameTextWidth, 56);
+    let ReportDateText = `REPORT DATE `;
+    const reportDateTextWidth = doc.getTextWidth(ReportDateText) + 140;
+
+    doc.text(`TEST DATE `, 140, 48);
+    doc.text(`: ${testDate}`, reportDateTextWidth, 48)
 
 
-    doc.text(`TEST DATE : ${new Date().toLocaleDateString("en-GB")}`, 140, 48);
+    doc.text(`REPORT DATE `, 140, 56);
+    doc.text(`: ${reportDate}`, reportDateTextWidth, 56)
 
-    let testDateText = `TEST DATE `;
-    const testDateTextWidth = doc.getTextWidth(testDateText) + 140;
 
-    
-
-    doc.text(`ADDRESS`, 140, 56);
-    doc.text(`: ${address.toUpperCase()}`, testDateTextWidth, 56)
+    doc.text(`ADDRESS`, 140, 64);
+    doc.text(`: ${address.toUpperCase()}`, reportDateTextWidth, 64)
 
 
     doc.text(`REF. BY`, 15, 64);
     doc.text(`: ${refBy.toUpperCase()}`, patientNameTextWidth, 64)
 
-    doc.text(`S.NO `, 140, 64);
-    doc.text(`: `, testDateTextWidth, 64)
+
 
     //Thanks for referal line
 
@@ -125,6 +159,11 @@ const generatePdf = ({
         doc.text("UNIT", 185, 80, { align: "right" });
         y = 79
     }
+    else if (selectedReports.includes("URINE-CULTURE & SENSITIVITY")) {
+        doc.setFont("cambria", "bold").setFontSize(16);
+        doc.text("-: URINE CULTURE & SENSITIVITY REPORT :-", 45, 80);
+        doc.setTextColor(0, 0, 0).setFontSize(12).setFont("Cambria", "normal");
+    }
     else {
         // CBC or multiple reports
         doc.text("TEST DESCRIPTION", 17, 80);
@@ -141,23 +180,83 @@ const generatePdf = ({
         y = CBC_Design(doc, cbcData, y)
     }
 
-    // Extra Sections
-    // const addSection = (title, data, storedTotalDataAsRange) => {
-    //     y += 12;
-    //     storedTotalDataAsRange.forEach((field) => {
-    //         doc.setFont("times", "bold").setFontSize(12);
-    //         doc.text(title, 22, y);
-    //         doc.setFont("times", "bold").setFontSize(12).setTextColor(255, 0, 0);
-    //         doc.text(`${data[title]} `, 95, y);
-    //     })
 
-    // };
+    if (selectedReports.includes("HB")) {
+        y = HB_Report_Design(doc, HB_value, y);
+    }
+
+    if (selectedReports.includes("S BILLIRUBIN")) {
+        y = S_BILLIRUBIN_Design(doc, y, S_BILLIRUBIN_Data);
+    }
+
+    if (selectedReports.includes("SGPT")) {
+        y = Sgpt_Design(doc, y, sgptVal);
+    }
+
+    if (selectedReports.includes("SGOT")) {
+        y = Sgot_Design(doc, y, sgotVal);
+    }
+
+    if (selectedReports.includes("S ALKALINE PHOSHATE")) {
+        console.log('hety');
+        
+        y = S_ALKALINE_PHOSHATE_Design(doc, y, S_ALKALINE_PHOSHATE_VAL);
+    }
+
+    if (selectedReports.includes("TOTAL PROTEIN")) {
+        console.log('hey there');
+        
+        y = TotalProtein_Design(doc, y, totalProteinVal)
+    }
+
+    if (selectedReports.includes("ALBUMIN")) {
+        y = Albumin_Design(doc, y, albuminVal);
+    }
+
+    if (selectedReports.includes("GLOBULIN")) {
+        y = Globulin_Design(doc, y, globulinVal);
+    }
+
+    if (selectedReports.includes("ALB/GLOBULIN RATIO")) {
+        y = Alb_globulin_ratio_Design(doc, y, alb_globulin_ratioVal);
+    }
+
+    if (selectedReports.includes("S. CREATININE")) {
+        y = ScreatnineVal_Design(doc, y, screatnineVal);
+    }
+
+    if (selectedReports.includes("S. UREA")) {
+        y = sUrea_Design(doc, y, sUreaVal);
+    }
+
+    if (selectedReports.includes("S.URIC ACID")) {
+        y = sUricAcid_Design(doc, y, sUricAcidVal);
+    }
+
+    if (selectedReports.includes("S. CHLORIDE")) {
+        y = sChloride_Design(doc, y, sChlorideVal);
+    }
+
+    if (selectedReports.includes("S . POTASSIUM")) {
+        y = sPotassium_Design(doc, y, sPotassiumVal);
+    }
+
+    if (selectedReports.includes("S . SODIUM")) {
+        y = sSodium_Design(doc, y, sSodiumVal);
+    }
+
+    if (selectedReports.includes("S. CALCIUM")) {
+        y = sCalcium_Design(doc, y, sCalciumVal);
+    }
+
+
     if (selectedReports.includes("MP card")) {
         y = MP_card_Design(doc, mpCardResult, y)
     }
 
-    if (selectedReports.includes("HB")) {
-        y = HB_Report_Design(doc, HB_value, y);
+
+    if (selectedReports.includes("Widal")) {
+        y = Widal_Design(doc, y, widalData);
     }
 
 
@@ -169,13 +268,11 @@ const generatePdf = ({
         y = KFT_Design(doc, y, KFT_Data);
     }
 
-    if (selectedReports.includes("Widal")) {
-        y = Widal_Design(doc, y, widalData);
+    if (selectedReports.includes("URINE-CULTURE & SENSITIVITY")) {
+        y = urineCultureReport(doc, y, cultureType, sensitivityData);
     }
 
-    if(selectedReports.includes("S BILLIRUBIN")) {
-        y = S_BILLIRUBIN_Design(doc,y,S_BILLIRUBIN_Data);
-    }
+
 
 
     //End of result line after all data

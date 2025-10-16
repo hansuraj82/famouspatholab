@@ -21,5 +21,5 @@ export function S_BILLIRUBIN_Design(doc, y, S_BILLIRUBIN_Data) {
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;
     });
-    return y - 7;
+    return y - 12;
 }

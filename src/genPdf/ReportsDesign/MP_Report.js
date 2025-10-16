@@ -4,7 +4,7 @@ export function MP_card_Design(doc, mpCardResult, y) {
     doc.text("",10,y);
 
     doc.setFont("Cambria", "normal").setFontSize(12).setTextColor(0,0,0);
-    doc.text("MP CARD", 17, y);
+    doc.text("MALARIA PARASITE (CARD)", 17, y);
 
     if (mpCardResult) {
   const text = mpCardResult.trim();
@@ -54,5 +54,5 @@ export function MP_card_Design(doc, mpCardResult, y) {
 doc.setTextColor(0, 0, 0); // reset
 
 
-    return y;
+    return y-2;
 }

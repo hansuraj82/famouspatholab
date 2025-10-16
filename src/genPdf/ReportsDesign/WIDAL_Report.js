@@ -6,7 +6,7 @@ export function Widal_Design(doc, y, widalData) {
     doc.setFont("Wingdings", "normal").setFontSize(14).setTextColor(255, 0, 0);
     doc.text("", 10, y);
     doc.setFont("Cambria", "normal").setFontSize(12).setTextColor(0, 0, 0);
-    doc.text("WIDAL:-", 17, y);
+    doc.text("WIDAL (SLIDE):-", 17, y);
     doc.text(WIDAL_RANGE[0].range, 130, y);
     y += 12;
 
