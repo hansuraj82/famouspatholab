@@ -8,6 +8,7 @@ import ReportGenerator from "./components/ReportGenerator";
 import ReportHistory from "./components/ReportHistory";
 import Layout from "./Layout";
 import ProtectedRoute from "./components/ProtectRoute/ProtectedRoute";
+import PageNotFound from "./components/PageNotFound";
 
 
 const router = createBrowserRouter([
@@ -34,6 +35,8 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      // ⭐ Catch-all 404 route
+      { path: "*", element: <PageNotFound /> },
     ],
   },    
 ]);
