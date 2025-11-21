@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import TestForm from "./TestForm";
 import { generatePdf } from "../genPdf/GeneratePdf";
 import {
   //LFT RANGE
@@ -20,7 +21,10 @@ import {
   S_CHLORIDE_RANGE,
   S_POTASSIUM_RANGE,
   S_SODIUM_RANGE,
-  S_CALCIUM_RANGE
+  S_CALCIUM_RANGE,
+  S_BILLIRUBIN_TOTAL_RANGE,
+  S_BILLIRUBIN_DIRECT_RANGE,
+  S_BILLIRUBIN_INDIRECT_RANGE
 } from "../utils/rangeForTests";
 
 
@@ -78,14 +82,16 @@ export default function ReportGenerator() {
   const [testDate, setTestDate] = useState("");
   const [reportDate, setReportDate] = useState("");
 
-
+  const [S_BILLIRUBIN_TOTAL_VAL, SET_S_BILLIRUBIN_TOTAL_VAL] = useState("");
+  const [S_BILLIRUBIN_DIRECT_VAL, SET_S_BILLIRUBIN_DIRECT_VAL] = useState("");
+  const [S_BILLIRUBIN_INDIRECT_VAL, SET_S_BILLIRUBIN_INDIRECT_VAL] = useState("");
   const [sgptVal, setSgptVal] = useState("");
   const [sgotVal, setSgotVal] = useState("");
-  const [S_ALKALINE_PHOSHATE_VAL,set_S_ALKALINE_PHOSHATE_VAL] = useState("");
-  const [totalProteinVal,setTotalProteinVal] = useState("");
-  const [albuminVal,setAlbuminVal] = useState("");
-  const [globulinVal,setGlobulinVal] = useState("");
-  const [alb_globulin_ratioVal,set_alb_globulin_ratioVal] = useState("");
+  const [S_ALKALINE_PHOSHATE_VAL, set_S_ALKALINE_PHOSHATE_VAL] = useState("");
+  const [totalProteinVal, setTotalProteinVal] = useState("");
+  const [albuminVal, setAlbuminVal] = useState("");
+  const [globulinVal, setGlobulinVal] = useState("");
+  const [alb_globulin_ratioVal, set_alb_globulin_ratioVal] = useState("");
   const [screatnineVal, setScreatnineVal] = useState("");
   const [sUreaVal, setSureaVal] = useState("");
   const [sUricAcidVal, setSuricAcidVal] = useState("");
@@ -93,7 +99,18 @@ export default function ReportGenerator() {
   const [sPotassiumVal, setSPotassiumVal] = useState("");
   const [sSodiumVal, setSSodiumVal] = useState("");
   const [sCalciumVal, setSCalciumVal] = useState("");
-  
+
+
+  const [customTests, setCustomTests] = useState([]);
+
+  const handleAddTest = (newTest) => {
+    setCustomTests((prev) => [...prev, newTest]);
+  };
+
+  const handleRemoveTest = (index) => {
+  setCustomTests(prev => prev.filter((_, i) => i !== index));
+};
+
 
 
   const [doctorList, setDoctorList] = useState([
@@ -323,11 +340,36 @@ export default function ReportGenerator() {
   };
 
 
-  const handleGeneratePdf = () => {
+  const handleGeneratePdf = async () => {
     const formattedDate = new Date().toLocaleDateString("en-GB");
 
     const finalTestDate = testDate ? new Date(testDate).toLocaleDateString("en-GB") : formattedDate;
     const finalReportDate = reportDate ? new Date(reportDate).toLocaleDateString("en-GB") : formattedDate;
+
+
+    // ✅ Build the data object that you want to save
+    const reportData = {
+      patientName,
+      age,
+      gender,
+      address,
+      refBy,
+      selectedReports,
+      testDate: finalTestDate,
+      reportDate: finalReportDate,
+      createdAt: new Date().toISOString(), // optional timestamp
+    };
+
+
+    // ✅ Save JSON locally if Electron API is available
+    if (window.electronAPI?.saveReport) {
+      try {
+        const res = await window.electronAPI.saveReport(reportData);
+        console.log("✅ Report saved successfully:", res.filePath);
+      } catch (err) {
+        console.error("❌ Failed to save report:", err);
+      }
+    }
 
     generatePdf({
       patientName,
@@ -345,6 +387,9 @@ export default function ReportGenerator() {
       KFT_Data,
       widalData,
       S_BILLIRUBIN_Data,
+      S_BILLIRUBIN_TOTAL_VAL,
+      S_BILLIRUBIN_DIRECT_VAL,
+      S_BILLIRUBIN_INDIRECT_VAL,
       cultureType,
       sensitivityData,
       testDate: finalTestDate,
@@ -362,7 +407,8 @@ export default function ReportGenerator() {
       sChlorideVal,
       sPotassiumVal,
       sSodiumVal,
-      sCalciumVal
+      sCalciumVal,
+      customTests
     })
   }
 
@@ -534,6 +580,9 @@ export default function ReportGenerator() {
                 "KFT",
                 "LFT",
                 "S BILLIRUBIN",
+                "S BILLIRUBIN (TOTAL)",
+                "S BILLIRUBIN (direct)",
+                "S BILLIRUBIN (indirect)",
                 "SGPT",
                 "SGOT",
                 "S ALKALINE PHOSHATE",
@@ -786,6 +835,63 @@ export default function ReportGenerator() {
             </div>
           )}
 
+
+          {/* S BILLIRUBIN (TOTAL) TEST */}
+          {selectedReports.includes("S BILLIRUBIN (TOTAL)") && (
+            <div>
+              <h2 className="font-semibold mb-2 text-gray-700">S BILLIRUBIN (TOTAL) VALUE</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4   border p-3 rounded">
+                {
+                  [...S_BILLIRUBIN_TOTAL_RANGE].map(field => (
+                    <div className="flex flex-col">
+                      <label className="text-sm font-medium text-gray-700 mb-1" htmlFor={field.key}>{field.key}</label>
+                      <input key={`${field.key} `.split('(')[1]} id={field.key} className="border p-2 rounded" placeholder={`(${field.unit}) `} value={S_BILLIRUBIN_TOTAL_VAL || ""}
+                        onChange={(e) => SET_S_BILLIRUBIN_TOTAL_VAL(e.target.value)} />
+                    </div>))
+                }
+              </div>
+
+            </div>
+          )}
+
+
+          {/* S BILLIRUBIN (DIRECT) TEST */}
+          {selectedReports.includes("S BILLIRUBIN (direct)") && (
+            <div>
+              <h2 className="font-semibold mb-2 text-gray-700">S BILLIRUBIN (direct) VALUE</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4   border p-3 rounded">
+                {
+                  [...S_BILLIRUBIN_DIRECT_RANGE].map(field => (
+                    <div className="flex flex-col">
+                      <label className="text-sm font-medium text-gray-700 mb-1" htmlFor={field.key}>{field.key}</label>
+                      <input key={`${field.key} `.split('(')[1]} id={field.key} className="border p-2 rounded" placeholder={`(${field.unit}) `} value={S_BILLIRUBIN_DIRECT_VAL || ""}
+                        onChange={(e) => SET_S_BILLIRUBIN_DIRECT_VAL(e.target.value)} />
+                    </div>))
+                }
+              </div>
+
+            </div>
+          )}
+
+
+          {/* S BILLIRUBIN (INDIRECT) TEST */}
+          {selectedReports.includes("S BILLIRUBIN (direct)") && (
+            <div>
+              <h2 className="font-semibold mb-2 text-gray-700">S BILLIRUBIN (indirect) VALUE</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4   border p-3 rounded">
+                {
+                  [...S_BILLIRUBIN_INDIRECT_RANGE].map(field => (
+                    <div className="flex flex-col">
+                      <label className="text-sm font-medium text-gray-700 mb-1" htmlFor={field.key}>{field.key}</label>
+                      <input key={`${field.key} `.split('(')[1]} id={field.key} className="border p-2 rounded" placeholder={`(${field.unit}) `} value={S_BILLIRUBIN_INDIRECT_VAL || ""}
+                        onChange={(e) => SET_S_BILLIRUBIN_INDIRECT_VAL(e.target.value)} />
+                    </div>))
+                }
+              </div>
+
+            </div>
+          )}
+
           {/* sgpt test */}
           {selectedReports.includes("SGPT") && (
             <div>
@@ -842,7 +948,7 @@ export default function ReportGenerator() {
           )}
 
 
-                    {/* totalProtein test */}
+          {/* totalProtein test */}
           {selectedReports.includes("TOTAL PROTEIN") && (
             <div>
               <h2 className="font-semibold mb-2 text-gray-700">TOTAL PROTEIN VALUE</h2>
@@ -861,7 +967,7 @@ export default function ReportGenerator() {
           )}
 
 
-            {/* albumin test */}
+          {/* albumin test */}
           {selectedReports.includes("ALBUMIN") && (
             <div>
               <h2 className="font-semibold mb-2 text-gray-700">ALBUMIN VALUE</h2>
@@ -879,7 +985,7 @@ export default function ReportGenerator() {
             </div>
           )}
 
-            {/* GLOBULIN test */}
+          {/* GLOBULIN test */}
           {selectedReports.includes("GLOBULIN") && (
             <div>
               <h2 className="font-semibold mb-2 text-gray-700">GLOBULIN VALUE</h2>
@@ -896,9 +1002,9 @@ export default function ReportGenerator() {
 
             </div>
           )}
-          
 
-            {/* ALB/GLOBULIN RATIO test */}
+
+          {/* ALB/GLOBULIN RATIO test */}
           {selectedReports.includes("ALB/GLOBULIN RATIO") && (
             <div>
               <h2 className="font-semibold mb-2 text-gray-700">ALB/GLOBULIN RATIO VALUE</h2>
@@ -917,7 +1023,7 @@ export default function ReportGenerator() {
           )}
 
 
-                      {/* S. CREATININE RATIO test */}
+          {/* S. CREATININE RATIO test */}
           {selectedReports.includes("S. CREATININE") && (
             <div>
               <h2 className="font-semibold mb-2 text-gray-700">S. CREATININE VALUE</h2>
@@ -936,7 +1042,7 @@ export default function ReportGenerator() {
           )}
 
 
-                      {/* S. UREA  test */}
+          {/* S. UREA  test */}
           {selectedReports.includes("S. UREA") && (
             <div>
               <h2 className="font-semibold mb-2 text-gray-700">S. UREA VALUE</h2>
@@ -955,7 +1061,7 @@ export default function ReportGenerator() {
           )}
 
 
-                                {/* S.URIC ACID test */}
+          {/* S.URIC ACID test */}
           {selectedReports.includes("S.URIC ACID") && (
             <div>
               <h2 className="font-semibold mb-2 text-gray-700">S.URIC ACID VALUE</h2>
@@ -975,7 +1081,7 @@ export default function ReportGenerator() {
 
 
 
-                               {/* S. CHLORIDE test */}
+          {/* S. CHLORIDE test */}
           {selectedReports.includes("S. CHLORIDE") && (
             <div>
               <h2 className="font-semibold mb-2 text-gray-700">S. CHLORIDE VALUE</h2>
@@ -994,7 +1100,7 @@ export default function ReportGenerator() {
           )}
 
 
-                                 {/* S . POTASSIUM test */}
+          {/* S . POTASSIUM test */}
           {selectedReports.includes("S . POTASSIUM") && (
             <div>
               <h2 className="font-semibold mb-2 text-gray-700">S . POTASSIUM VALUE</h2>
@@ -1013,7 +1119,7 @@ export default function ReportGenerator() {
           )}
 
 
-                                   {/*S . SODIUM test */}
+          {/*S . SODIUM test */}
           {selectedReports.includes("S . SODIUM") && (
             <div>
               <h2 className="font-semibold mb-2 text-gray-700">S . SODIUM VALUE</h2>
@@ -1032,7 +1138,7 @@ export default function ReportGenerator() {
           )}
 
 
-                                   {/*S. CALCIUM test */}
+          {/*S. CALCIUM test */}
           {selectedReports.includes("S. CALCIUM") && (
             <div>
               <h2 className="font-semibold mb-2 text-gray-700">S. CALCIUM VALUE</h2>
@@ -1092,6 +1198,64 @@ export default function ReportGenerator() {
             </div>
           )}
 
+          <TestForm onAdd={handleAddTest} />
+
+          {/* SHOW ADDED TESTS */}
+<div className="mt-6">
+  {customTests.length > 0 && (
+    <h3 className="text-xl font-semibold mb-3 border-b pb-2">
+      Custom Tests Added
+    </h3>
+  )}
+
+  <div className="space-y-4">
+    {customTests.map((test, index) => (
+      <div
+        key={index}
+        className="
+          p-4 rounded-xl border bg-white shadow-sm 
+          hover:shadow-md transition-shadow
+          flex flex-col sm:flex-row sm:items-center sm:justify-between
+        "
+      >
+        {/* LEFT SIDE */}
+        <div className="space-y-1">
+          <p className="text-lg font-bold text-gray-800">{test.test}</p>
+
+          <div className="text-sm text-gray-600 flex flex-wrap gap-x-4 gap-y-1">
+            <span>
+              <span className="font-semibold">Value:</span> {test.value}
+            </span>
+            <span>
+              <span className="font-semibold">Range:</span> {test.refRange}
+            </span>
+            <span>
+              <span className="font-semibold">Unit:</span> {test.unit}
+            </span>
+          </div>
+        </div>
+
+        {/* RIGHT SIDE (REMOVE BUTTON) */}
+        <button
+          onClick={() => handleRemoveTest(index)}
+          className="
+            mt-3 sm:mt-0
+            flex items-center gap-1
+            px-4 py-2 rounded-lg
+            bg-red-500 text-white 
+            hover:bg-red-600 active:scale-95 
+            transition-all
+          "
+        >
+          <span>Remove</span>
+        </button>
+      </div>
+    ))}
+  </div>
+</div>
+
+
+
           {/* Button */}
           <button onClick={handleGeneratePdf} className="genpdfbtn cursPointer w-full mt-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
             Generate Report (Preview)
@@ -1111,7 +1275,7 @@ export default function ReportGenerator() {
                 {/* ✅ Download Button */}
                 <a
                   href={pdfUrl}
-                  download={`${patientName}-${address}-${selectedReports}`}
+                  download={`${patientName}-${address}-${selectedReports}Report`}
                   className="px-4 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition"
                 >
                   Download

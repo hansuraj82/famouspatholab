@@ -1,5 +1,5 @@
 import { S_UREA_RANGE } from "../../utils/rangeForTests";
-import { getArrowValue, getValOrDash } from "../../utils/utilitiesFunc";
+import { getFontBoldValue, getValOrDash } from "../../utils/utilitiesFunc";
 
 export function sUrea_Design(doc, y, sUreaVal) {
 
@@ -13,7 +13,7 @@ export function sUrea_Design(doc, y, sUreaVal) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(sUreaVal, field.range, doc, 81, y - 3.5);
+        arrowVal = getFontBoldValue(sUreaVal, field.range, doc, 81, y - 3.5);
         getValOrDash(field, sUreaVal, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });

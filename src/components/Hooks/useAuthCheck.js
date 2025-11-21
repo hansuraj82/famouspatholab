@@ -5,8 +5,9 @@ export default function useAuthCheck() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const checkAuth = () => {
     const stored = localStorage.getItem("auth");
+
     if (!stored) {
       setIsLoggedIn(false);
       return;
@@ -28,7 +29,18 @@ export default function useAuthCheck() {
       localStorage.removeItem("auth");
       setIsLoggedIn(false);
     }
-  }, [navigate]);
+  };
+
+  // Run initially
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  // Run when auth status changes anywhere
+  useEffect(() => {
+    window.addEventListener("auth-change", checkAuth);
+    return () => window.removeEventListener("auth-change", checkAuth);
+  }, []);
 
   return { isLoggedIn, setIsLoggedIn };
 }

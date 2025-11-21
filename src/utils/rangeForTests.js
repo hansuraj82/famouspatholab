@@ -56,6 +56,19 @@ export const S_BILLIRUBIN_RANGE = [
   { key: "S BILLIRUBIN (direct)", range: "0.0-0.6", unit: "mg/dl" },
   { key: "S BILLIRUBIN (indirect)", range: "0.0-0.4", unit: "mg/dl" },
 ];
+
+export const S_BILLIRUBIN_TOTAL_RANGE = [
+  {key: "S BILLIRUBIN (TOTAL)", range: "0.2-1.0", unit: "mg/dl"}
+];
+
+export const S_BILLIRUBIN_DIRECT_RANGE = [
+  { key: "S BILLIRUBIN (direct)", range: "0.0-0.6", unit: "mg/dl" }
+];
+
+export const S_BILLIRUBIN_INDIRECT_RANGE = [
+  { key: "S BILLIRUBIN (indirect)", range: "0.0-0.4", unit: "mg/dl" }
+];
+
 export const SGPT_RANGE = [
   { key: "SGPT", range: "5.0-40.0", unit: "U/L" }
 ];

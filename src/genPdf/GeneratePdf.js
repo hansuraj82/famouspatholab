@@ -12,7 +12,7 @@ import { LFT_Design } from "./ReportsDesign/LFT_Report";
 import { HeadingLogo, signture } from "../utils/Base64File/Logo.js";
 import { KFT_Design } from "./ReportsDesign/KFT_Report";
 import { Widal_Design } from "./ReportsDesign/WIDAL_Report.js";
-import { S_BILLIRUBIN_Design } from "./ReportsDesign/S_BILLIRUBIN_Report.js";
+import { S_BILLIRUBIN_Design, S_BILLIRUBIN_DIRECT_Design, S_BILLIRUBIN_INDIRECT_Design, S_BILLIRUBIN_TOTAL_Design } from "./ReportsDesign/S_BILLIRUBIN_Report.js";
 import { urineCultureReport } from "./ReportsDesign/urineCultureReport.js";
 import { Sgpt_Design } from "./ReportsDesign/sgpt_Report.js";
 import { Sgot_Design } from "./ReportsDesign/sgot_Report.js";
@@ -28,6 +28,7 @@ import { sChloride_Design } from "./ReportsDesign/sChloride_Report.js";
 import { sPotassium_Design } from "./ReportsDesign/sPotassium.js";
 import { sSodium_Design } from "./ReportsDesign/sSodium_Report.js";
 import { sCalcium_Design } from "./ReportsDesign/sCalcium_Report.js";
+import { CustomTestReport } from "./ReportsDesign/customReport.js";
 
 
 const generatePdf = ({
@@ -46,6 +47,9 @@ const generatePdf = ({
     KFT_Data,
     widalData,
     S_BILLIRUBIN_Data,
+    S_BILLIRUBIN_TOTAL_VAL,
+    S_BILLIRUBIN_DIRECT_VAL,
+    S_BILLIRUBIN_INDIRECT_VAL,
     cultureType,
     sensitivityData,
     testDate,
@@ -63,7 +67,8 @@ const generatePdf = ({
     sChlorideVal,
     sPotassiumVal,
     sSodiumVal,
-    sCalciumVal
+    sCalciumVal,
+    customTests
 }) => {
     const doc = new jsPDF();
     doc.setTextColor(0, 0, 0);
@@ -189,6 +194,19 @@ const generatePdf = ({
         y = S_BILLIRUBIN_Design(doc, y, S_BILLIRUBIN_Data);
     }
 
+    if (selectedReports.includes("S BILLIRUBIN (TOTAL)")) {
+        y = S_BILLIRUBIN_TOTAL_Design(doc, y, S_BILLIRUBIN_TOTAL_VAL);
+    }
+
+    if (selectedReports.includes("S BILLIRUBIN (direct)")) {
+        y = S_BILLIRUBIN_DIRECT_Design(doc, y, S_BILLIRUBIN_DIRECT_VAL);
+    }
+
+    if (selectedReports.includes("S BILLIRUBIN (indirect)")) {
+        y = S_BILLIRUBIN_INDIRECT_Design(doc, y, S_BILLIRUBIN_INDIRECT_VAL);
+    }
+
+
     if (selectedReports.includes("SGPT")) {
         y = Sgpt_Design(doc, y, sgptVal);
     }
@@ -199,13 +217,13 @@ const generatePdf = ({
 
     if (selectedReports.includes("S ALKALINE PHOSHATE")) {
         console.log('hety');
-        
+
         y = S_ALKALINE_PHOSHATE_Design(doc, y, S_ALKALINE_PHOSHATE_VAL);
     }
 
     if (selectedReports.includes("TOTAL PROTEIN")) {
         console.log('hey there');
-        
+
         y = TotalProtein_Design(doc, y, totalProteinVal)
     }
 
@@ -271,7 +289,10 @@ const generatePdf = ({
     if (selectedReports.includes("URINE-CULTURE & SENSITIVITY")) {
         y = urineCultureReport(doc, y, cultureType, sensitivityData);
     }
-
+    
+    if (customTests && customTests.length > 0) {
+        y = CustomTestReport(doc, y, customTests);
+    }
 
 
 
@@ -288,7 +309,7 @@ const generatePdf = ({
 
     doc.line(10, y + 2, 225, y + 2)
 
-    doc.addImage(`data:image/png;base64,${signture}`, "PNG", 150, y - 20, 55, 18);
+    //doc.addImage(`data:image/png;base64,${signture}`, "PNG", 150, y - 20, 55, 18);
 
     doc.setTextColor(0, 0, 0).setFont("Cambria", "italic").setFontSize(10);
     doc.text("Service Incharge", 160, y);

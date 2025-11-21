@@ -1,22 +1,24 @@
 import React from "react";
-
+import hero1 from "../assets/hero.jpg";
+import hero2 from "../assets/hero2.jpg";
+import hero3 from "../assets/hero3.jpg";
 const team = [
   {
     name: "Ashish Kumar Rajak",
     role: "Lab Technician 1 (senior)",
-    img: "/hero.jpg",
+    img: hero1,
     quote: "Dedicated to delivering the most accurate diagnostics for every patient.",
   },
   {
     name: "Manish Kumar",
     role: "Lab Technician 2",
-    img: "/hero.jpg",
+    img: hero2,
     quote: "Precision and passion drive my commitment to healthcare excellence.",
   },
   {
     name: "Sandeep Kumar",
     role: "Lab Technician 3",
-    img: "/hero.jpg",
+    img: hero3,
     quote: "We turn data into health insights for better patient outcomes.",
   },
 ];

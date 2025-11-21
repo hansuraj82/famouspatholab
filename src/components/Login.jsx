@@ -59,6 +59,7 @@ document.title = 'FAMOUS-PATHO-LAB | LOGIN'
     if (email === adminEmail && password === adminPassword) {
       const expiry = new Date().getTime() + 24 * 60 * 60 * 1000; // 1 day
       localStorage.setItem("auth", JSON.stringify({ loggedIn: true, expiry }));
+      window.dispatchEvent(new Event("auth-change"));
 
       navigate("/report");
     } else {

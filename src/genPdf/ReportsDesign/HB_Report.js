@@ -1,4 +1,4 @@
-import { getArrowValue, getValOrDash } from "../../utils/utilitiesFunc";
+import { getFontBoldValue, getValOrDash } from "../../utils/utilitiesFunc";
 import { HB_RANGE } from "../../utils/rangeForTests";
 
 export function HB_Report_Design(doc, HB_value, y) {
@@ -16,7 +16,7 @@ export function HB_Report_Design(doc, HB_value, y) {
         if (HB_value) {
             HB_valueOfPercent = HB_value.split("/")[1];
         }   
-        getArrowValue(HB_valueOfPercent, field.range, doc, 81, y - 4);
+        getFontBoldValue(HB_valueOfPercent, field.range, doc, 81, y - 4);
         getValOrDash(field.key, HB_value, doc, 85, y, true);
         doc.setFont("Cambria", "normal")
         doc.text(field.range, 130, y);

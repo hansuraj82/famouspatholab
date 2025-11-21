@@ -23,7 +23,6 @@ export function CBC_Design(doc, cbcData, y) {
     CBC_MAIN.forEach((field) => {
         doc.text(field.key, 13, y);
         if (field.key === "HEMOGLOBIN") {
-            console.log(cbcData[field.key]?.raw);
             let hemoValue = '';
             if (cbcData[field.key]?.raw) {
                 hemoValue = `${cbcData[field.key]?.raw} / ${cbcData[field.key]?.percent}%`
@@ -52,7 +51,6 @@ export function CBC_Design(doc, cbcData, y) {
     DIFFERENTIAL_WBC.forEach((field) => {
         doc.text(field.key, 13, y);
         arrowVal = getArrowValue(cbcData[field.key], field.range, doc, 85, y - 3.5);
-        console.log(arrowVal);
         
         getValOrDash(field.key, cbcData[field.key], doc,90, y,arrowVal)
         doc.text(field.range, 132, y);
