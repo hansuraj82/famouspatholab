@@ -119,7 +119,7 @@ document.title = 'FAMOUS-PATHO-LAB | LOGIN'
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition transform hover:scale-[1.02] shadow-md"
+              className="cursPointer blueBtn w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition transform hover:scale-[1.02] shadow-md"
             >
               Login
             </button>

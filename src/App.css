@@ -6,17 +6,18 @@
     cursor: pointer;
 }
 
-.addDoctorBtn {
+.greenBtn {
     background-color: #00c951;
 }
 
-.closeBtn {
+.redBtn {
     background-color: #fb2c36;
 
 }
-.headColor {
-    color: #1447e6;
+.blueBtn {
+    background-color: #1447e6;
 }
+
 
 @keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-10px); }

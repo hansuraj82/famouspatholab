@@ -108,8 +108,8 @@ export default function ReportGenerator() {
   };
 
   const handleRemoveTest = (index) => {
-  setCustomTests(prev => prev.filter((_, i) => i !== index));
-};
+    setCustomTests(prev => prev.filter((_, i) => i !== index));
+  };
 
 
 
@@ -556,7 +556,7 @@ export default function ReportGenerator() {
                 />
                 <button
                   onClick={handleAddDoctor}
-                  className="bg-green-500 text-white px-5 rounded hover:bg-green-600 transition-all"
+                  className="cursPointer greenBtn bg-green-500 text-white px-5 rounded hover:bg-green-600 transition-all"
                 >
                   Add
                 </button>
@@ -1201,63 +1201,62 @@ export default function ReportGenerator() {
           <TestForm onAdd={handleAddTest} />
 
           {/* SHOW ADDED TESTS */}
-<div className="mt-6">
-  {customTests.length > 0 && (
-    <h3 className="text-xl font-semibold mb-3 border-b pb-2">
-      Custom Tests Added
-    </h3>
-  )}
+          <div className="mt-6">
+            {customTests.length > 0 && (
+              <h3 className="text-xl font-semibold mb-3 border-b pb-2">
+                Custom Tests Added
+              </h3>
+            )}
 
-  <div className="space-y-4">
-    {customTests.map((test, index) => (
-      <div
-        key={index}
-        className="
+            <div className="space-y-4">
+              {customTests.map((test, index) => (
+                <div
+                  key={index}
+                  className="
           p-4 rounded-xl border bg-white shadow-sm 
           hover:shadow-md transition-shadow
           flex flex-col sm:flex-row sm:items-center sm:justify-between
         "
-      >
-        {/* LEFT SIDE */}
-        <div className="space-y-1">
-          <p className="text-lg font-bold text-gray-800">{test.test}</p>
+                >
+                  {/* LEFT SIDE */}
+                  <div className="space-y-1">
+                    <p className="text-lg font-bold text-gray-800">{test.test}</p>
 
-          <div className="text-sm text-gray-600 flex flex-wrap gap-x-4 gap-y-1">
-            <span>
-              <span className="font-semibold">Value:</span> {test.value}
-            </span>
-            <span>
-              <span className="font-semibold">Range:</span> {test.refRange}
-            </span>
-            <span>
-              <span className="font-semibold">Unit:</span> {test.unit}
-            </span>
-          </div>
-        </div>
+                    <div className="text-sm text-gray-600 flex flex-wrap gap-x-4 gap-y-1">
+                      <span>
+                        <span className="font-semibold">Value:</span> {test.value}
+                      </span>
+                      <span>
+                        <span className="font-semibold">Range:</span> {test.refRange}
+                      </span>
+                      <span>
+                        <span className="font-semibold">Unit:</span> {test.unit}
+                      </span>
+                    </div>
+                  </div>
 
-        {/* RIGHT SIDE (REMOVE BUTTON) */}
-        <button
-          onClick={() => handleRemoveTest(index)}
-          className="
-            mt-3 sm:mt-0
-            flex items-center gap-1
-            px-4 py-2 rounded-lg
-            bg-red-500 text-white 
-            hover:bg-red-600 active:scale-95 
-            transition-all
+                  {/* RIGHT SIDE (REMOVE BUTTON) */}
+                  <button
+                    onClick={() => handleRemoveTest(index)}
+                    className=" cursPointer redBtn mt-3 sm:mt-0
+                                flex items-center gap-1
+                                px-4 py-2 rounded-lg
+                                bg-red-500 text-white 
+                                hover:bg-red-600 active:scale-95 
+                                transition-all
           "
-        >
-          <span>Remove</span>
-        </button>
-      </div>
-    ))}
-  </div>
-</div>
+                  >
+                    <span>Remove</span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
 
 
 
           {/* Button */}
-          <button onClick={handleGeneratePdf} className="genpdfbtn cursPointer w-full mt-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+          <button onClick={handleGeneratePdf} className="blueBtn cursPointer w-full mt-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
             Generate Report (Preview)
           </button>
         </div>
@@ -1273,18 +1272,18 @@ export default function ReportGenerator() {
 
               <div className="flex gap-3">
                 {/* ✅ Download Button */}
-                <a
+                {/* <a
                   href={pdfUrl}
                   download={`${patientName}-${address}-${selectedReports}Report`}
                   className="px-4 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition"
                 >
                   Download
-                </a>
+                </a> */}
 
                 {/* ❌ Close Button */}
                 <button
                   onClick={() => setShowPreview(false)}
-                  className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                  className="redBtn cursPointer px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
                 >
                   Close
                 </button>

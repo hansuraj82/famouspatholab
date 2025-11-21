@@ -64,7 +64,7 @@ export default function TestForm({ onAdd }) {
         {/* Submit button spans full width on small screens */}
         <button
           className="
-            bg-blue-600 text-white px-4 py-2 rounded 
+            cursPointer blueBtn bg-blue-600 text-white px-4 py-2 rounded 
             sm:col-span-2 lg:col-span-4 
             w-full
           "

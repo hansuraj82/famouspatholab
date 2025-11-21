@@ -58,7 +58,7 @@ export default function Home() {
           </p>
           <Link
             to="/report"
-            className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg hover:scale-105 animate-fadeIn delay-300"
+            className="cursPointer blueBtn bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg hover:scale-105 animate-fadeIn delay-300"
           >
             Generate Report
           </Link>
