@@ -276,6 +276,10 @@ const generatePdf = ({
     if (selectedReports.includes("Widal")) {
         y = Widal_Design(doc, y, widalData);
     }
+    
+    if (customTests && customTests.length > 0) {
+        y = CustomTestReport(doc, y, customTests);
+    }
 
 
     if (selectedReports.includes("LFT")) {
@@ -289,10 +293,8 @@ const generatePdf = ({
     if (selectedReports.includes("URINE-CULTURE & SENSITIVITY")) {
         y = urineCultureReport(doc, y, cultureType, sensitivityData);
     }
-    
-    if (customTests && customTests.length > 0) {
-        y = CustomTestReport(doc, y, customTests);
-    }
+
+
 
 
 

@@ -3,7 +3,7 @@
 
 
 import React, { useEffect, useState } from "react";
-
+import '../App.css'
 import { NavLink, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import useAuthCheck from "./Hooks/useAuthCheck";
@@ -94,7 +94,7 @@ export default function Navbar() {
             </NavLink>
           ))}
           {isLoggedIn && (
-            <button onClick={handleLogout} className="redBtn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+            <button onClick={handleLogout} className="redBtn cursPointer bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
               Logout
             </button>
 

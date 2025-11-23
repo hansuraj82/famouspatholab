@@ -796,7 +796,6 @@ export default function ReportGenerator() {
                     ...S_CREATININE_RANGE,
                     ...S_UREA_RANGE,
                     ...S_URIC_ACID_RANGE,
-                    ...S_CHLORIDE_RANGE,
                     ...S_POTASSIUM_RANGE,
                     ...S_SODIUM_RANGE,
                     ...S_CALCIUM_RANGE
