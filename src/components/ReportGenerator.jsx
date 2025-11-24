@@ -775,7 +775,7 @@ export default function ReportGenerator() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4   border p-3 rounded">
                 {
                   [...S_BILLIRUBIN_RANGE, ...SGPT_RANGE, ...SGOT_RANGE, ...S_ALKALINE_PHOSPHATE_RANGE, ...TOTAL_PROTEIN_RANGE, ...ALBUMIN_RANGE, ...GLOBULIN_RANGE, ...ALB_GLOBULIN_RATIO_RANGE].map(field => (
-                    <div className="flex flex-col">
+                    <div className="flex flex-col" key={field.key}>
                       <label className="text-sm font-medium text-gray-700 mb-1" htmlFor={field.key}>{field.key}</label>
                       <input key={field.key} id={field.key} className="border p-2 rounded" placeholder={`(${field.unit})`} value={LFT_Data[field.key] || ""}
                         onChange={(e) => handleLFTChange(field.key, e.target.value)} disabled={field.key === "GLOBULIN" || field.key === "ALB/GLOBULIN RATIO"} />
@@ -800,7 +800,7 @@ export default function ReportGenerator() {
                     ...S_SODIUM_RANGE,
                     ...S_CALCIUM_RANGE
                   ].map(field => (
-                    <div className="flex flex-col">
+                    <div className="flex flex-col" key={field.key}>
                       <label className="text-sm font-medium text-gray-700 mb-1" htmlFor={field.key}>{field.key}</label>
                       <input
                         key={field.key}

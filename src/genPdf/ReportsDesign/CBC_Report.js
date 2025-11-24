@@ -1,10 +1,11 @@
-import { getArrowValue, getValOrDash } from "../../utils/utilitiesFunc";
+import { getArrowValue, getCBCRange, getValOrDash } from "../../utils/utilitiesFunc";
 import { CBC_MAIN, DIFFERENTIAL_WBC } from "../../utils/rangeForTests";
 
 
 
 
-export function CBC_Design(doc, cbcData, y) {
+export function CBC_Design(doc, cbcData, y, age, gender) {
+    const Selected_CBC_Range = getCBCRange(age, gender);
 
     y += 12;
     doc.setFont("Cambria", "bold").setFontSize(12).setTextColor(0, 0, 0);
@@ -20,7 +21,7 @@ export function CBC_Design(doc, cbcData, y) {
 
     doc.setFont("Cambria", "normal").setFontSize(10);
     let arrowVal = false;
-    CBC_MAIN.forEach((field) => {
+    Selected_CBC_Range.forEach((field) => {
         doc.text(field.key, 13, y);
         if (field.key === "HEMOGLOBIN") {
             let hemoValue = '';
@@ -30,11 +31,11 @@ export function CBC_Design(doc, cbcData, y) {
 
 
             arrowVal = getArrowValue(cbcData[field.key]?.raw, field.range, doc, 85, y - 3.5);
-            getValOrDash(field.key, hemoValue, doc,90, y,arrowVal);
+            getValOrDash(field.key, hemoValue, doc, 90, y, arrowVal);
         }
         else {
             arrowVal = getArrowValue(cbcData[field.key], field.range, doc, 85, y - 3.5);
-            getValOrDash(field.key, cbcData[field.key], doc,90, y , arrowVal)
+            getValOrDash(field.key, cbcData[field.key], doc, 90, y, arrowVal)
         }
 
         doc.text(field.range, 132, y);
@@ -51,8 +52,8 @@ export function CBC_Design(doc, cbcData, y) {
     DIFFERENTIAL_WBC.forEach((field) => {
         doc.text(field.key, 13, y);
         arrowVal = getArrowValue(cbcData[field.key], field.range, doc, 85, y - 3.5);
-        
-        getValOrDash(field.key, cbcData[field.key], doc,90, y,arrowVal)
+
+        getValOrDash(field.key, cbcData[field.key], doc, 90, y, arrowVal)
         doc.text(field.range, 132, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 8;

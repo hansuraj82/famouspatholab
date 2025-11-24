@@ -182,7 +182,7 @@ const generatePdf = ({
 
     // CBC Section
     if (selectedReports.includes("CBC")) {
-        y = CBC_Design(doc, cbcData, y)
+        y = CBC_Design(doc, cbcData, y, age, gender)
     }
 
 
@@ -248,7 +248,7 @@ const generatePdf = ({
     }
 
     if (selectedReports.includes("S.URIC ACID")) {
-        y = sUricAcid_Design(doc, y, sUricAcidVal);
+        y = sUricAcid_Design(doc, y, sUricAcidVal, gender);
     }
 
     if (selectedReports.includes("S. CHLORIDE")) {
@@ -276,7 +276,7 @@ const generatePdf = ({
     if (selectedReports.includes("Widal")) {
         y = Widal_Design(doc, y, widalData);
     }
-    
+
     if (customTests && customTests.length > 0) {
         y = CustomTestReport(doc, y, customTests);
     }
@@ -287,7 +287,7 @@ const generatePdf = ({
     }
 
     if (selectedReports.includes("KFT")) {
-        y = KFT_Design(doc, y, KFT_Data);
+        y = KFT_Design(doc, y, KFT_Data, gender);
     }
 
     if (selectedReports.includes("URINE-CULTURE & SENSITIVITY")) {

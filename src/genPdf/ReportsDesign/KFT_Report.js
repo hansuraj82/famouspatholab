@@ -1,15 +1,15 @@
-import { getArrowValue, getValOrDash } from "../../utils/utilitiesFunc";
+import { getArrowValue, getSuricAcidRange, getValOrDash } from "../../utils/utilitiesFunc";
 import {
     S_CREATININE_RANGE,
     S_UREA_RANGE,
     S_URIC_ACID_RANGE,
-    S_CHLORIDE_RANGE,
     S_POTASSIUM_RANGE,
     S_SODIUM_RANGE,
     S_CALCIUM_RANGE
 } from "../../utils/rangeForTests";
 
-export function KFT_Design(doc, y, KFT_Data) {
+export function KFT_Design(doc, y, KFT_Data, gender) {
+    const sUricAcidRange = getSuricAcidRange(gender);
     y += 12;
     doc.setFont("Cambria", "normal").setFontSize(18).setTextColor(0, 0, 0);
     doc.text("KIDNEY FUNCTION TEST (K F T):-", 13, y);
@@ -20,7 +20,7 @@ export function KFT_Design(doc, y, KFT_Data) {
     [
         ...S_CREATININE_RANGE,
         ...S_UREA_RANGE,
-        ...S_URIC_ACID_RANGE,
+        ...sUricAcidRange,
         ...S_POTASSIUM_RANGE,
         ...S_SODIUM_RANGE,
         ...S_CALCIUM_RANGE
