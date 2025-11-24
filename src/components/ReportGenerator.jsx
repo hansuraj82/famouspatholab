@@ -164,6 +164,25 @@ export default function ReportGenerator() {
     "LOMFLOXACIN",
   ];
 
+  const [antibiotics, setAntibiotics] = useState(antibioticsForCulture);
+  console.log(antibiotics);
+
+
+  //add ne antibiotics for urine culture test
+  const [newAntibiotic, setNewAntibiotic] = useState("");
+
+  const addAntibiotic = () => {
+    if (!newAntibiotic.trim()) return;
+    setAntibiotics([...antibiotics, newAntibiotic.toUpperCase()]);
+    setNewAntibiotic("");
+  };
+
+  const removeAntibiotic = (item) => {
+    setAntibiotics(antibiotics.filter(a => a !== item));
+  };
+
+
+
   //handle urine-culture report
   const handleValueChangeForCulture = (name, value) => {
     setSensitivityData((prev) => ({
@@ -403,6 +422,7 @@ export default function ReportGenerator() {
       S_BILLIRUBIN_INDIRECT_VAL,
       cultureType,
       sensitivityData,
+      antibioticsForUrineCulture: antibiotics,
       testDate: finalTestDate,
       reportDate: finalReportDate,
       sgptVal,
@@ -1193,15 +1213,17 @@ export default function ReportGenerator() {
 
           {/* URINE CULTURE TEST */}
           {selectedReports.includes("URINE-CULTURE & SENSITIVITY") && (
-            <div className="p-4 max-w-2xl mx-auto border rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold mb-3 text-center">
+            <div className="p-6 max-w-3xl mx-auto border rounded-2xl shadow-lg bg-white">
+              <h2 className="text-2xl font-bold mb-4 text-center text-blue-700">
                 URINE CULTURE & SENSITIVITY
               </h2>
 
               {/* Culture Type Select */}
-              <label className="block mb-2 font-medium">Routine Culture:</label>
+              <label className="block mb-2 font-semibold text-gray-700">
+                Routine Culture:
+              </label>
               <select
-                className="border p-2 rounded w-full mb-4"
+                className="border p-2 rounded-lg w-full mb-6 focus:ring-2 focus:ring-blue-500 outline-none"
                 value={cultureType}
                 onChange={(e) => setCultureType(e.target.value)}
               >
@@ -1210,24 +1232,86 @@ export default function ReportGenerator() {
                 <option value="E-COLI">E-COLI</option>
               </select>
 
-              {/* Show input fields only if E-COLI is selected */}
+              {/* Only for E-COLI */}
               {cultureType === "E-COLI" && (
-                <div className="grid grid-cols-2 gap-3">
-                  {antibioticsForCulture.map((name) => (
-                    <div key={name}>
-                      <label className="block text-sm font-medium mb-1">{name}</label>
-                      <input
-                        type="number"
-                        min={0}
-                        className="border p-2 rounded w-full"
-                        value={sensitivityData[name] || ""}
-                        onChange={(e) => handleValueChangeForCulture(name, e.target.value)}
-                        placeholder="++"
-                      />
-                    </div>
-                  ))}
-                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
+                  {/* LEFT PANEL — ANTIBIOTIC LIST */}
+                  <div className="bg-gray-50 p-5 rounded-xl border shadow">
+                    <h2 className="text-lg font-semibold text-blue-700 mb-4">
+                      Antibiotics List
+                    </h2>
+
+                    {/* Add Antibiotic */}
+                    <div className="flex gap-2 mb-4">
+                      <input
+                        value={newAntibiotic}
+                        onChange={(e) => setNewAntibiotic(e.target.value)}
+                        placeholder="Add new antibiotic"
+                        className="border p-2 rounded-lg flex-1 focus:ring-2 focus:ring-blue-500 outline-none"
+                      />
+                      <button
+                        onClick={addAntibiotic}
+                        disabled={antibiotics.length >= 30}
+                        className={`px-5 py-2 rounded-lg transition text-white 
+                            ${antibiotics.length >= 30
+                            ? "grayBtn bg-gray-400 cursor-not-allowed"
+                            : "greenBtn cursPointer bg-green-600 hover:bg-green-700"
+                          }`}
+                      >
+                        {antibiotics.length >= 30 ? "Limit Reached" : "Add"}
+                      </button>
+                    </div>
+
+                    {/* Antibiotic List with Remove */}
+                    <div className="space-y-2 max-h-[260px] overflow-auto pr-2">
+                      {antibiotics.map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex justify-between items-center p-2 border rounded-lg bg-white shadow-sm hover:shadow transition"
+                        >
+                          <span className="font-medium text-gray-700">{item}</span>
+                          <button
+                            onClick={() => removeAntibiotic(item)}
+                            className="redBtn cursPointer bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* RIGHT PANEL — SENSITIVITY INPUTS */}
+                  <div className="bg-gray-50 p-5 rounded-xl border shadow">
+                    <h2 className="text-lg font-semibold text-blue-700 mb-4">
+                      Sensitivity Values
+                    </h2>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[380px] overflow-auto pr-2">
+                      {antibiotics.map((name) => (
+                        <div
+                          key={name}
+                          className="p-3 border rounded-xl bg-white shadow-sm hover:shadow"
+                        >
+                          <label className="block text-sm font-semibold mb-1 text-gray-700">
+                            {name}
+                          </label>
+
+                          <input
+                            type="number"
+                            min={0}
+                            max={20}
+                            className="border p-2 rounded-lg w-full focus:ring-2 focus:ring-blue-500 outline-none"
+                            value={sensitivityData[name] || ""}
+                            onChange={(e) => handleValueChangeForCulture(name, e.target.value)}
+                            placeholder="++"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
           )}

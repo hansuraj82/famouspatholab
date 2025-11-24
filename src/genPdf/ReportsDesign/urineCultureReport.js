@@ -9,7 +9,7 @@ const antibioticsForCulture = [
   "GATIFLOXACIN", "LIVOFLOXACIN", "LOMFLOXACIN"
 ];
 
-export function urineCultureReport(doc, y, cultureType, sensitivityData) {
+export function urineCultureReport(doc, y, cultureType, sensitivityData, antibioticsForUrineCulture) {
   y += 12;
 
   // Header boxes
@@ -29,7 +29,7 @@ export function urineCultureReport(doc, y, cultureType, sensitivityData) {
 
   const baseY = y; // Remember starting Y for right column
 
-  antibioticsForCulture.forEach((field, index) => {
+  antibioticsForUrineCulture.forEach((field, index) => {
     const isRightColumn = index > 14;
     const colX = isRightColumn ? 100 : 14;
     const colY = isRightColumn ? baseY + (index - 15) * 11 : y;

@@ -52,6 +52,7 @@ const generatePdf = ({
     S_BILLIRUBIN_INDIRECT_VAL,
     cultureType,
     sensitivityData,
+    antibioticsForUrineCulture,
     testDate,
     reportDate,
     sgptVal,
@@ -291,7 +292,7 @@ const generatePdf = ({
     }
 
     if (selectedReports.includes("URINE-CULTURE & SENSITIVITY")) {
-        y = urineCultureReport(doc, y, cultureType, sensitivityData);
+        y = urineCultureReport(doc, y, cultureType, sensitivityData, antibioticsForUrineCulture);
     }
 
 
