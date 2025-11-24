@@ -1,9 +1,8 @@
-import { S_URIC_ACID_RANGE } from "../../utils/rangeForTests";
-import { getFontBoldValue, getValOrDash } from "../../utils/utilitiesFunc";
+import { getFontBoldValue, getSuricAcidRange, getValOrDash } from "../../utils/utilitiesFunc";
 
-export function sUricAcid_Design(doc, y, sUricAcidVal) {
+export function sUricAcid_Design(doc, y, sUricAcidVal, gender) {
 
-
+    const S_URIC_ACID_RANGE = getSuricAcidRange(gender);
     y += 12;
     let arrowVal = false;
     [...S_URIC_ACID_RANGE].forEach((field) => {
