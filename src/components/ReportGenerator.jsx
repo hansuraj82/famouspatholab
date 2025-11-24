@@ -112,6 +112,15 @@ export default function ReportGenerator() {
   };
 
 
+  const getTitreOptions = (result) => {
+    if (result === "+VE") {
+      return [20, 40, 80, 160, 320];
+    }
+    return [20];
+  };
+
+
+
 
   const [doctorList, setDoctorList] = useState([
     "DR R  KUMAR",
@@ -370,6 +379,8 @@ export default function ReportGenerator() {
         console.error("❌ Failed to save report:", err);
       }
     }
+
+
 
     generatePdf({
       patientName,
@@ -699,44 +710,68 @@ export default function ReportGenerator() {
               </div>
 
               {/* Table Rows */}
-              {["S- TYPHI “O”", "S- TYPHI “H”", "S- TYPHI “AH”", "S- TYPHI “BH”"].map((test) => (
-                <div
-                  key={test}
-                  className="grid grid-cols-3 gap-4 border-b p-2 items-center"
-                >
-                  {/* Column 1: Key */}
-                  <span className="font-semibold">{test}</span>
+              {["S- TYPHI “O”", "S- TYPHI “H”", "S- TYPHI “AH”", "S- TYPHI “BH”"].map((test) => {
+                const result = widalData[test]?.result || "";
+                const titre = widalData[test]?.titre || "";
+                const titreOptions = getTitreOptions(result);
 
-                  {/* Column 2: Select */}
-                  <select
-                    className="border p-2 rounded"
-                    value={widalData[test]?.result || ""}
-                    onChange={(e) =>
-                      setWidalData({
-                        ...widalData,
-                        [test]: { ...widalData[test], result: e.target.value },
-                      })
-                    }
+                const handleResultChange = (e) => {
+                  const selected = e.target.value;
+
+                  setWidalData({
+                    ...widalData,
+                    [test]: {
+                      result: selected,
+                      titre: selected === "NEG" ? "20" : "", // 👈 Auto-set titre=20
+                    },
+                  });
+                };
+
+                const handleTitreChange = (e) => {
+                  setWidalData({
+                    ...widalData,
+                    [test]: { ...widalData[test], titre: e.target.value },
+                  });
+                };
+
+                return (
+                  <div
+                    key={test}
+                    className="grid grid-cols-3 gap-4 border-b p-2 items-center"
                   >
-                    <option value="">Select</option>
-                    <option value="+VE">+VE</option>
-                    <option value="NEG">NEG</option>
-                  </select>
+                    {/* Test Name */}
+                    <span className="font-semibold">{test}</span>
 
-                  {/* Column 3: Input (Titre) */}
-                  <input
-                    className="border p-2 rounded"
-                    placeholder="40"
-                    value={widalData[test]?.titre || ""}
-                    onChange={(e) =>
-                      setWidalData({
-                        ...widalData,
-                        [test]: { ...widalData[test], titre: e.target.value },
-                      })
-                    }
-                  />
-                </div>
-              ))}
+                    {/* Result Select */}
+                    <select
+                      className="border p-2 rounded"
+                      value={result}
+                      onChange={handleResultChange}
+                    >
+                      <option value="">Select</option>
+                      <option value="+VE">+VE</option>
+                      <option value="NEG">NEG</option>
+                    </select>
+
+                    {/* Titre Select */}
+                    <select
+                      className="border p-2 rounded"
+                      value={titre}
+                      onChange={handleTitreChange}
+                      disabled={result === "NEG" || !result} // 👈 Disable when NEG and no result
+                    >
+                      <option value="">Select Titre</option>
+                      {titreOptions.map((t) => (
+                        <option key={t} value={t}>
+                          {t}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                );
+              })}
+
+
             </div>
           )}
 
