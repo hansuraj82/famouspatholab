@@ -1,5 +1,5 @@
 import { S_CREATININE_RANGE } from "../../utils/rangeForTests";
-import { getFontBoldValue, getValOrDash } from "../../utils/utilitiesFunc";
+import { getArrowValue, getValOrDash } from "../../utils/utilitiesFunc";
 
 export function ScreatnineVal_Design(doc, y, screatnineVal) {
 
@@ -13,8 +13,8 @@ export function ScreatnineVal_Design(doc, y, screatnineVal) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getFontBoldValue(screatnineVal, field.range, doc, 81, y - 3.5);
-        getValOrDash(field, screatnineVal, doc, 85, y, arrowVal)
+        arrowVal = getArrowValue(screatnineVal, field.range, doc, 85, y - 3.5);
+        getValOrDash(field, screatnineVal, doc, 90, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;

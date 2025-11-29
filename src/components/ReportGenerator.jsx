@@ -26,6 +26,10 @@ import {
   S_BILLIRUBIN_DIRECT_RANGE,
   S_BILLIRUBIN_INDIRECT_RANGE
 } from "../utils/rangeForTests";
+import NumberInput from "./NumberInput";
+import TimeInput from "./TimeInput";
+import PNSelect from "./PNSelect";
+import Select from "./Select";
 
 
 
@@ -101,6 +105,48 @@ export default function ReportGenerator() {
   const [sCalciumVal, setSCalciumVal] = useState("");
 
 
+  const [testValues, setTestValues] = useState({
+    ESR: "",
+    ESR_1H: "",
+    ESR_2H: "",
+    ESR_AVG: "",
+    BS_F: "",
+    BS_R: "",
+    BS_PP: "",
+    CHOLESTEROL: "",
+    CHLORI: "",
+    CRP_IMMUNOTURIDOMETRY: "",
+    BT_MIN: "",
+    BT_SEC: "",
+    CT_MIN: "",
+    CT_SEC: "",
+    WBC: "",
+    DENGUE: "",
+    MALARIA: "",
+    PREGNANCY: "",
+    HCV: "",
+    HIV: "",
+    HBSAG: "",
+    ABO: "",
+    VDRL: "",
+    HPYLORI: "",
+    SPUTAM: "",
+    MANTOUX: "",
+    RA_FACTOR: "",
+    ASO_TITRE: "",
+    CRP_SIMPLE: "",
+    URINE_SUGAR: "",
+    URINE_PROTEIN: ""
+  });
+
+
+  const update = (key, value) => {
+    setTestValues(prev => ({ ...prev, [key]: value }));
+  };
+
+
+
+
   const [customTests, setCustomTests] = useState([]);
 
   const handleAddTest = (newTest) => {
@@ -165,7 +211,6 @@ export default function ReportGenerator() {
   ];
 
   const [antibiotics, setAntibiotics] = useState(antibioticsForCulture);
-  console.log(antibiotics);
 
 
   //add ne antibiotics for urine culture test
@@ -439,6 +484,7 @@ export default function ReportGenerator() {
       sPotassiumVal,
       sSodiumVal,
       sCalciumVal,
+      testValues,
       customTests
     })
   }
@@ -629,6 +675,36 @@ export default function ReportGenerator() {
                 "S . SODIUM",
                 "S. CALCIUM",
                 "URINE-CULTURE & SENSITIVITY",
+                "ESR",
+                "ESR 1st h",
+                "ESR 2nd h",
+                "ESR(average)",
+                "BLOOD SUGAR(F)",
+                "BLOOD SUGAR(R)",
+                "BLOOD SUGAR(PP)",
+                "S. CHOLESTEROL",
+                "S. CHLORI",
+                "CRP IMMUNOTURIDOMETRY",
+                "BT TIME",
+                "CT TIME",
+                "W.B.C COUNT",
+                "DENGUE",
+                "MALARIA PARASITE (Slide Test)",
+                "PREGNANCY",
+                "HCV",
+                "HIV1 & HIV2",
+                "HBsAg",
+                "ABO RH",
+                "V D R L",
+                "H-PYLORI(Ab<combo)",
+                "SPUTAM",
+                "MANTOUX",
+                "R A FACTOR",
+                "ASO Titre",
+                "C R P",
+                "URINE SUGAR",
+                "URINE PROTEIN"
+
               ].map((r) => {
                 const isSelected = selectedReports.includes(r);
                 const disabled = isDisabled(r, selectedReports);
@@ -637,7 +713,7 @@ export default function ReportGenerator() {
                   <label
                     key={r}
                     className={`flex items-center justify-between p-3 border rounded-lg shadow-sm cursor-pointer transition-all
-            ${disabled
+                        ${disabled
                         ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                         : isSelected
                           ? "bg-blue-100 border-blue-500 text-blue-700 font-semibold shadow-md"
@@ -709,10 +785,11 @@ export default function ReportGenerator() {
               >
                 <option value="">Select Result</option>
                 <option value="P F (POSITIVE) WEAK">P F (POSITIVE) WEAK</option>
-                <option value="P F POSITIVE">P F POSITIVE</option>
-                <option value="P V POSITIVE">P V POSITIVE</option>
+                <option value="P F (POSITIVE)">P F (POSITIVE)</option>
+                <option value="P V (POSITIVE)">P V (POSITIVE)</option>
+                <option value="P V (POSITIVE) WEAK">P V (POSITIVE) WEAK</option>
+                <option value="P F & P V POSITIVE">P F & P V (POSITIVE)</option>
                 <option value="NEGATIVE">NEGATIVE</option>
-                <option value="P F & P V POSITIVE">P F & P V POSITIVE</option>
               </select>
             </div>
           )}
@@ -1315,6 +1392,174 @@ export default function ReportGenerator() {
               )}
             </div>
           )}
+
+
+
+          {/* other tests forms */}
+
+
+
+          {/* NUMERIC TESTS */}
+          {selectedReports.includes("ESR") && (
+            <NumberInput label="ESR" value={testValues.ESR} onChange={(v) => update("ESR", v)} />
+          )}
+
+          {selectedReports.includes("ESR 1st h") && (
+            <NumberInput label="ESR 1st h" value={testValues.ESR_1H} onChange={(v) => update("ESR_1H", v)} />
+          )}
+
+          {selectedReports.includes("ESR 2nd h") && (
+            <NumberInput label="ESR 2nd h" value={testValues.ESR_2H} onChange={(v) => update("ESR_2H", v)} />
+          )}
+
+          {selectedReports.includes("ESR(average)") && (
+            <NumberInput label="ESR (average)" value={testValues.ESR_AVG} onChange={(v) => update("ESR_AVG", v)} />
+          )}
+
+          {selectedReports.includes("BLOOD SUGAR(F)") && (
+            <NumberInput label="BLOOD SUGAR(F)" value={testValues.BS_F} onChange={(v) => update("BS_F", v)} />
+          )}
+
+          {selectedReports.includes("BLOOD SUGAR(R)") && (
+            <NumberInput label="BLOOD SUGAR(R)" value={testValues.BS_R} onChange={(v) => update("BS_R", v)} />
+          )}
+
+          {selectedReports.includes("BLOOD SUGAR(PP)") && (
+            <NumberInput label="BLOOD SUGAR(PP)" value={testValues.BS_PP} onChange={(v) => update("BS_PP", v)} />
+          )}
+
+          {selectedReports.includes("S. CHOLESTEROL") && (
+            <NumberInput label="S. CHOLESTEROL" value={testValues.CHOLESTEROL} onChange={(v) => update("CHOLESTEROL", v)} />
+          )}
+
+                    {selectedReports.includes("S. CHLORI") && (
+            <NumberInput label="S. CHLORI" value={testValues.CHLORI} onChange={(v) => update("CHLORI", v)} />
+          )}
+
+
+          {selectedReports.includes("CRP IMMUNOTURIDOMETRY") && (
+            <NumberInput label="CRP IMMUNOTURIDOMETRY" value={testValues.CRP_IMMUNOTURIDOMETRY} onChange={(v) => update("CRP_IMMUNOTURIDOMETRY", v)} />
+          )}
+
+          {selectedReports.includes("W.B.C COUNT") && (
+            <NumberInput label="W.B.C COUNT" value={testValues.WBC} onChange={(v) => update("WBC", v)} />
+          )}
+
+
+
+          {/* BT/CT TIME */}
+          {selectedReports.includes("BT TIME") && (
+            <TimeInput
+              label="BT TIME"
+              min={testValues.BT_MIN}
+              sec={testValues.BT_SEC}
+              onMinChange={(v) => update("BT_MIN", v)}
+              onSecChange={(v) => update("BT_SEC", v)}
+            />
+          )}
+
+          {selectedReports.includes("CT TIME") && (
+            <TimeInput
+              label="CT TIME"
+              min={testValues.CT_MIN}
+              sec={testValues.CT_SEC}
+              onMinChange={(v) => update("CT_MIN", v)}
+              onSecChange={(v) => update("CT_SEC", v)}
+            />
+          )}
+
+
+
+          {/* POSITIVE/NEGATIVE TESTS */}
+
+          {selectedReports.includes("DENGUE") && (
+            <PNSelect label="DENGUE" value={testValues.DENGUE} onChange={(v) => update("DENGUE", v)} />
+          )}
+
+          {selectedReports.includes("MALARIA PARASITE (Slide Test)") && (
+            <PNSelect label="MALARIA PARASITE (Slide Test)" value={testValues.MALARIA} onChange={(v) => update("MALARIA", v)} />
+          )}
+
+          {selectedReports.includes("PREGNANCY") && (
+            <PNSelect label="PREGNANCY" value={testValues.PREGNANCY} onChange={(v) => update("PREGNANCY", v)} />
+          )}
+
+          {selectedReports.includes("HCV") && (
+            <PNSelect label="HCV" value={testValues.HCV} onChange={(v) => update("HCV", v)} />
+          )}
+
+          {selectedReports.includes("HIV1 & HIV2") && (
+            <PNSelect label="HIV1 & HIV2" value={testValues.HIV} onChange={(v) => update("HIV", v)} />
+          )}
+
+          {selectedReports.includes("HBsAg") && (
+            <PNSelect label="HBsAg" value={testValues.HBSAG} onChange={(v) => update("HBSAG", v)} />
+          )}
+
+          {selectedReports.includes("V D R L") && (
+            <PNSelect label="V D R L" value={testValues.VDRL} onChange={(v) => update("VDRL", v)} />
+          )} 
+
+          {selectedReports.includes("H-PYLORI(Ab<combo)") && (
+            <PNSelect label="H-PYLORI(Ab<combo)" value={testValues.HPYLORI} onChange={(v) => update("HPYLORI", v)} />
+          )}
+
+          {selectedReports.includes("SPUTAM") && (
+            <PNSelect label="SPUTAM" value={testValues.SPUTAM} onChange={(v) => update("SPUTAM", v)} />
+          )}    
+
+          {selectedReports.includes("MANTOUX") && (
+            <PNSelect label="MANTOUX" value={testValues.MANTOUX} onChange={(v) => update("MANTOUX", v)} />
+          )}   
+
+
+          {selectedReports.includes("R A FACTOR") && (
+            <PNSelect label="R A FACTOR" value={testValues.RA_FACTOR} onChange={(v) => update("RA_FACTOR", v)} />
+          )} 
+
+
+          {selectedReports.includes("ASO Titre") && (
+            <PNSelect label="ASO Titre" value={testValues.ASO_TITRE} onChange={(v) => update("ASO_TITRE", v)} />
+          )}    
+
+
+          {selectedReports.includes("C R P") && (
+            <PNSelect label="C R P" value={testValues.CRP_SIMPLE} onChange={(v) => update("CRP_SIMPLE", v)} />
+          )}  
+
+
+          {/* SPECIAL SELECTS */}
+          {selectedReports.includes("ABO RH") && (
+            <Select
+              label="ABO RH"
+              value={testValues.ABO}
+              options={["(A) POSITIVE", "(A) NEGATIVE", "(B) POSITIVE", "(B)NEGATIVE", "(O) POSITIVE", "(O)NEGATIVE", "(AB) POSITIVE", "(AB)NEGATIVE"]}
+              onChange={(v) => update("ABO", v)}
+            />
+          )}
+
+          {selectedReports.includes("URINE SUGAR") && (
+            <Select
+              label="URINE SUGAR"
+              value={testValues.URINE_SUGAR}
+              options={["NEGATIVE","NILL", "TRACE", "+", "++", "+++"]}
+              onChange={(v) => update("URINE_SUGAR", v)}
+            />
+          )}
+          {selectedReports.includes("URINE PROTEIN") && (
+            <Select
+              label="URINE PROTEIN"
+              value={testValues.URINE_PROTEIN}
+              options={["NEGATIVE","NILL", "TRACE", "+", "++", "+++"]}
+              onChange={(v) => update("URINE_PROTEIN", v)}
+            />
+          )}
+
+
+
+
+
+
 
           <TestForm onAdd={handleAddTest} />
 

@@ -11,8 +11,8 @@ export function Globulin_Design(doc, y, globulinVal) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(globulinVal, field.range, doc, 81, y - 3.5);
-        getValOrDash(field, globulinVal, doc, 85, y, arrowVal)
+        arrowVal = getArrowValue(globulinVal, field.range, doc, 85, y - 3.5);
+        getValOrDash(field, globulinVal, doc, 90, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;

@@ -1,23 +1,42 @@
-import { getFontBoldValue, getValOrDash } from "../../utils/utilitiesFunc";
+import { getArrowValue, getValOrDash } from "../../utils/utilitiesFunc";
 
 export function CustomTestReport(doc, y, tests) {
     y += 12;
-    let valueBold = false;
-    
-    
+
     tests.forEach((field) => {
-        doc.setFont("Wingdings", "normal").setFontSize(14).setTextColor(255, 0, 0);
+        let arrowVal = false; // default
+        let x = 90;
+
+        // 🔹 ICON
+        doc.setFont("Wingdings", "normal")
+           .setFontSize(14)
+           .setTextColor(255, 0, 0);
         doc.text("", 10, y);
-        doc.setFontSize(11).setTextColor(0, 0, 0);
+
+        // 🔹 TEST NAME
         doc.setFont("Cambria", "normal")
+           .setFontSize(11)
+           .setTextColor(0, 0, 0);
         doc.text(field.test.toUpperCase(), 17, y);
-        console.log(field.value);
-        valueBold = getFontBoldValue(field.value, field.refRange, doc, 81, y - 3.5);
-        console.log(valueBold);
+
+        // 🔹 POSITIVE / NEGATIVE special case
+        if (typeof field.value === "string" &&
+            (field.value.toUpperCase() === "POSITIVE" || field.value.toUpperCase() === "NEGATIVE")) {
+
+            arrowVal = field.value.toUpperCase() === "POSITIVE";  
+            // POSITIVE → true   , NEGATIVE → false
+            getValOrDash(field, field.value, doc, x-5, y, arrowVal);
+
+        } else {
+            // 🔹 Numeric case → use arrow logic
+            arrowVal = getArrowValue(field.value, field.refRange, doc, x-5, y - 3.5);
+            getValOrDash(field, field.value, doc, x, y, arrowVal);
+        }
         
-        getValOrDash(field, field.value, doc, 85, y, valueBold)
+        // 🔹 REF RANGE + UNIT
         doc.text(field.refRange, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
+
         y += 10;
     });
 

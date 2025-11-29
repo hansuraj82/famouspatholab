@@ -13,8 +13,8 @@ export function  Albumin_Design(doc, y, albuminVal) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(albuminVal, field.range, doc, 81, y - 3.5);
-        getValOrDash(field, albuminVal, doc, 85, y, arrowVal)
+        arrowVal = getArrowValue(albuminVal, field.range, doc, 85, y - 3.5);
+        getValOrDash(field, albuminVal, doc, 90, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;

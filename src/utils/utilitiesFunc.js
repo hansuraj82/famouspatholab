@@ -26,7 +26,6 @@ export const getArrowValue = (val, range, doc, x, y) => {
 };
 
 export const getFontBoldValue = (val, range, doc, x, y) => {
-    console.log('val is ', val);
     if (!val || !range.includes("-")) {
         let capitalVal = val.toUpperCase();
         if (capitalVal == 'POSITIVE') return true;
@@ -45,25 +44,47 @@ export const getFontBoldValue = (val, range, doc, x, y) => {
     return false;
 };
 
-export function getValOrDash(field, val, doc, x, y, arrowVal) {
-    console.log(val);
+// export function getValOrDash(field, val, doc, x, y, arrowVal) {
 
-    if (!val || val == ' / %') {
-        doc.text("-", x, y)
+//     if (!val || val == 'gm/undefined') {
+//         doc.text("-", x, y)
+//     }
+//     else {
+//         if (arrowVal) {
+//             console.log('hello k');
+            
+//             doc.setFont("Cambria", "bold");
+//             doc.text(`${val}`, x, y);
+//             doc.setFont("Cambria", "normal");
+//         }
+//         else doc.text(`${val}`, x, y);
+
+//     }
+
+// }
+
+
+export function getValOrDash(field,val, doc, x, y, highlight = false) {
+    // Prevent jsPDF from receiving undefined / null / objects
+    if (val === undefined || val === null || val === "" || val === "gm/undefined") {
+        doc.text("-", x, y);
+        return;
     }
-    else {
-        console.log(arrowVal);
 
-        if (arrowVal) {
-            doc.setFont("Cambria", "bold");
-            doc.text(`${val}`, x, y);
-            doc.setFont("Cambria", "normal");
-        }
-        else doc.text(`${val}`, x, y);
+    const text = val  // ensure it's a string
 
+    if (highlight) {
+        doc.setFont("Cambria", "bold");
+        doc.text(text, x, y);
+        doc.setFont("Cambria", "normal");
+    } else {
+        doc.text(text, x, y);
     }
-
 }
+
+
+
+
 //FUNCTION FOR CBC RANGE CHANGE AS PER THE AGE AND GENDER
 
 export function getCBCRange(age, gender) {

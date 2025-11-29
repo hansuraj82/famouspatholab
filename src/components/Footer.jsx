@@ -4,7 +4,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-r from-blue-700 to-blue-500 text-white py-10 mt-16">
+    <footer className="blueBackground bg-gradient-to-r from-blue-700 to-blue-500 text-white py-10 mt-16">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
 
         {/* Brand Info */}

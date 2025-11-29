@@ -29,6 +29,8 @@ import { sPotassium_Design } from "./ReportsDesign/sPotassium.js";
 import { sSodium_Design } from "./ReportsDesign/sSodium_Report.js";
 import { sCalcium_Design } from "./ReportsDesign/sCalcium_Report.js";
 import { CustomTestReport } from "./ReportsDesign/customReport.js";
+import { BLOOD_SUGAR_F_Design, BLOOD_SUGAR_PP_Design, BLOOD_SUGAR_R_Design, BT_TIME_Design, CRPIMMUN_Design, CT_TIME_Design, ESR1_Design, ESR2_Design, ESR_Average_Design, ESR_Design, S_CHLORI_Design, S_CHOLESTEROL_Design, WBC_COUNT_Design } from "./ReportsDesign/otherTest_Reports.js";
+import { P_N_Design } from "./ReportsDesign/P_N_Report.js";
 
 
 const generatePdf = ({
@@ -69,6 +71,7 @@ const generatePdf = ({
     sPotassiumVal,
     sSodiumVal,
     sCalciumVal,
+    testValues,
     customTests
 }) => {
     const doc = new jsPDF();
@@ -269,18 +272,140 @@ const generatePdf = ({
     }
 
 
-    if (selectedReports.includes("MP card")) {
-        y = MP_card_Design(doc, mpCardResult, y)
-    }
-
-
     if (selectedReports.includes("Widal")) {
         y = Widal_Design(doc, y, widalData);
     }
 
+
+    if (selectedReports.includes("ESR")) {
+        y = ESR_Design(doc, y, testValues.ESR);
+    }
+
+    if (selectedReports.includes("ESR 1st h")) {
+        y = ESR1_Design(doc, y, testValues.ESR_1H);
+    }
+
+    if (selectedReports.includes("ESR 2nd h")) {
+        y = ESR2_Design(doc, y, testValues.ESR_2H);
+    }
+    if (selectedReports.includes("ESR(average)")) {
+        y = ESR_Average_Design(doc, y, testValues.ESR_AVG);
+    }
+    if (selectedReports.includes("BLOOD SUGAR(F)")) {
+        y = BLOOD_SUGAR_F_Design(doc, y, testValues.BS_F);
+    }
+
+    if (selectedReports.includes("BLOOD SUGAR(R)")) {
+        y = BLOOD_SUGAR_R_Design(doc, y, testValues.BS_R);
+    }
+
+    if (selectedReports.includes("BLOOD SUGAR(PP)")) {
+        y = BLOOD_SUGAR_PP_Design(doc, y, testValues.BS_PP);
+    }
+
+    if (selectedReports.includes("S. CHOLESTEROL")) {
+        y = S_CHOLESTEROL_Design(doc, y, testValues.CHOLESTEROL);
+    }
+
+    if (selectedReports.includes("S. CHLORI")) {
+        y = S_CHLORI_Design(doc, y, testValues.CHLORI);
+    }
+
+    if (selectedReports.includes("CRP IMMUNOTURIDOMETRY")) {
+        y = CRPIMMUN_Design(doc, y, testValues.CRP_IMMUNOTURIDOMETRY);
+    }
+
+    if (selectedReports.includes("BT TIME")) {
+        // BT_MIN BT_SEC
+        let BT_TIME = (parseFloat(testValues.BT_MIN) + parseFloat((testValues.BT_SEC / 60))).toFixed(2)
+
+        y = BT_TIME_Design(doc, y, BT_TIME);
+    }
+
+    if (selectedReports.includes("CT TIME")) {
+        let CT_TIME = (parseFloat(testValues.CT_MIN) + parseFloat((testValues.CT_SEC / 60))).toFixed(2)
+        y = CT_TIME_Design(doc, y, CT_TIME);
+    }
+
+    if (selectedReports.includes("W.B.C COUNT")) {
+        y = WBC_COUNT_Design(doc, y, testValues.WBC);
+    }
+
+    if (selectedReports.includes("MP card")) {
+        y = MP_card_Design(doc, mpCardResult, y)
+    }
+
+    if (selectedReports.includes("DENGUE")) {
+        y = P_N_Design(doc, "DENGUE", y, testValues.DENGUE)
+    }
+
+    if (selectedReports.includes("MALARIA PARASITE (Slide Test)")) {
+        y = P_N_Design(doc, "MALARIA PARASITE (Slide Test)", y, testValues.MALARIA)
+    }
+
+    if (selectedReports.includes("PREGNANCY")) {
+        y = P_N_Design(doc, "PREGNANCY", y, testValues.PREGNANCY)
+    }
+
+    if (selectedReports.includes("HCV")) {
+        y = P_N_Design(doc, "HCV", y, testValues.HCV)
+    }
+
+    if (selectedReports.includes("HIV1 & HIV2")) {
+        y = P_N_Design(doc, "HIV1 & HIV2", y, testValues.HIV)
+    }
+
+    if (selectedReports.includes("HBsAg")) {
+        y = P_N_Design(doc, "HBsAg", y, testValues.HBSAG)
+    }
+
+    if (selectedReports.includes("ABO RH")) {
+        y = P_N_Design(doc, "ABO RH", y, testValues.ABO)
+    }
+
+    if (selectedReports.includes("V D R L")) {
+        y = P_N_Design(doc, "V D R L", y, testValues.VDRL)
+    }
+
+    if (selectedReports.includes("H-PYLORI(Ab<combo)")) {
+        y = P_N_Design(doc, "H-PYLORI(Ab<combo)", y, testValues.HPYLORI)
+    }
+
+    if (selectedReports.includes("SPUTAM")) {
+        y = P_N_Design(doc, "SPUTAM", y, testValues.SPUTAM)
+    }
+
+    if (selectedReports.includes("MANTOUX")) {
+        y = P_N_Design(doc, "MANTOUX", y, testValues.MANTOUX)
+    }
+
+    if (selectedReports.includes("R A FACTOR")) {
+        y = P_N_Design(doc, "R A FACTOR", y, testValues.RA_FACTOR)
+    }
+
+    if (selectedReports.includes("ASO Titre")) {
+        y = P_N_Design(doc, "ASO Titre", y, testValues.ASO_TITRE)
+    }
+
+    if (selectedReports.includes("C R P")) {
+        y = P_N_Design(doc, "C R P", y, testValues.CRP_SIMPLE)
+    }
+
+
+    if (selectedReports.includes("URINE SUGAR")) {
+        y = P_N_Design(doc, "URINE SUGAR", y, testValues.URINE_SUGAR)
+    }
+
+    if (selectedReports.includes("URINE PROTEIN")) {
+        y = P_N_Design(doc, "URINE PROTEIN", y, testValues.URINE_PROTEIN)
+    }
+
+
     if (customTests && customTests.length > 0) {
         y = CustomTestReport(doc, y, customTests);
     }
+
+
 
 
     if (selectedReports.includes("LFT")) {
@@ -294,6 +419,8 @@ const generatePdf = ({
     if (selectedReports.includes("URINE-CULTURE & SENSITIVITY")) {
         y = urineCultureReport(doc, y, cultureType, sensitivityData, antibioticsForUrineCulture);
     }
+
+
 
 
 

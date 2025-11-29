@@ -180,9 +180,57 @@ export const WIDAL_RANGE = [
   }
 ];
 
+export const ESR_RANGE = [
+  { key: "ESR", range: "0-12", unit: "mm/hr" }
+];
 
+export const ESR1_RANGE = [
+  { key: "ESR 1st h", range: "0-12", unit: "mm/hr" }
+];
 
+export const ESR2_RANGE = [
+  { key: "ESR 2nd h", range: "0-12", unit: "mm/hr" }
+];
 
+export const ESR_Average_RANGE = [
+  { key: "ESR(average)", range: "0-12", unit: "mm/hr" }
+];
+
+export const BLOOD_SUGAR_F_RANGE = [
+  { key: "BLOOD SUGAR(F)", range: "70-110", unit: "mg/dl" }
+];
+
+export const BLOOD_SUGAR_R_RANGE = [
+  { key: "BLOOD SUGAR(R)", range: "70-140", unit: "mg/dl" }
+];
+
+export const BLOOD_SUGAR_PP_RANGE = [
+  { key: "BLOOD SUGAR(PP)", range: "70-140", unit: "mg/dl" }
+];
+
+export const S_CHOLESTEROL_RANGE = [
+  { key: "S. CHOLESTEROL", range: "125-200", unit: "lu/L" }
+];
+
+export const S_CHLORI_RANGE = [
+  { key: "S. CHLORI", range: "8.7-10.2", unit: "lu/L" }
+];
+
+export const CRPIMMUN_RANGE = [
+  { key: "CRP IMMUNOTURIDOMETRY", range: "00-6.0", unit: "mg/dl" }
+];
+
+export const BT_TIME_RANGE = [
+  { key: "BT TIME", range: "1-3", unit: "MIN" }
+];
+
+export const CT_TIME_RANGE = [
+  { key: "CT TIME", range: "1-6", unit: "MIN" }
+];
+
+export const WBC_COUNT_RANGE = [
+  {key: "W.B.C COUNT" , range: "4000-11000" , unit: "/CUMM"} 
+];
 
 
 
