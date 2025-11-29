@@ -272,11 +272,6 @@ const generatePdf = ({
     }
 
 
-    if (selectedReports.includes("Widal")) {
-        y = Widal_Design(doc, y, widalData);
-    }
-
-
     if (selectedReports.includes("ESR")) {
         y = ESR_Design(doc, y, testValues.ESR);
     }
@@ -405,7 +400,9 @@ const generatePdf = ({
         y = CustomTestReport(doc, y, customTests);
     }
 
-
+    if (selectedReports.includes("Widal")) {
+        y = Widal_Design(doc, y, widalData);
+    }
 
 
     if (selectedReports.includes("LFT")) {
