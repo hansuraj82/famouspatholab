@@ -707,7 +707,7 @@ export default function ReportGenerator() {
 
               ].map((r) => {
                 const isSelected = selectedReports.includes(r);
-                const disabled = isDisabled(r, selectedReports);
+                const disabled = false;
 
                 return (
                   <label
@@ -1006,7 +1006,7 @@ export default function ReportGenerator() {
 
 
           {/* S BILLIRUBIN (INDIRECT) TEST */}
-          {selectedReports.includes("S BILLIRUBIN (direct)") && (
+          {selectedReports.includes("S BILLIRUBIN (indirect)") && (
             <div>
               <h2 className="font-semibold mb-2 text-gray-700">S BILLIRUBIN (indirect) VALUE</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4   border p-3 rounded">
