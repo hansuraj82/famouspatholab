@@ -9,6 +9,7 @@ import ReportHistory from "./components/ReportHistory";
 import Layout from "./Layout";
 import ProtectedRoute from "./components/ProtectRoute/ProtectedRoute";
 import PageNotFound from "./components/PageNotFound";
+import ReportSelection from "./components/ReportSelection";
 
 
 const router = createBrowserRouter([
@@ -23,9 +24,17 @@ const router = createBrowserRouter([
         path: "/report",
         element: (
           <ProtectedRoute>
-            <ReportGenerator />
+            <ReportSelection />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "/report/form",
+        element: (
+          <ProtectedRoute>
+            <ReportGenerator/>
+          </ProtectedRoute>
+        )
       },
       {
         path: "/history",

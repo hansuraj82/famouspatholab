@@ -15,14 +15,18 @@
 
 }
 .blueBtn {
-    background-color: #1447e6;
+    background-color: oklch(54.6% 0.245 262.881);
+}
+
+.blueText {
+    color: oklch(48.8% 0.243 264.376) ;
 }
 
 .blueBackground {
-    background-color: #1447e6;
+    background-color: oklch(48.8% 0.243 264.376);
 }
 .grayBtn {
-    background-color: gray;
+    background-color: oklch(80.313% 0.00222 14.941);
 }
 
 

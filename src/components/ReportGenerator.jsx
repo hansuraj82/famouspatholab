@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import TestForm from "./TestForm";
 import { generatePdf } from "../genPdf/GeneratePdf";
 import {
@@ -40,6 +40,21 @@ export default function ReportGenerator() {
 
   //if a user is logged in then this page is accessible otherwise you will be redirected to login page
   const navigate = useNavigate();
+  const { state } = useLocation();
+
+  // if (!state?.selectedReports) {
+  //   navigate("/report/select");
+  //   return null;
+  // }
+
+  const selectedReports = state.selectedReports;
+  let patientName = state.patientName;
+  let age = state.age;
+  let gender = state.gender;
+  let address = state.address;
+  let refBy = state.refBy;
+  let testDate = state.testDate;
+  let reportDate = state.reportDate;
 
   useEffect(() => {
     const stored = localStorage.getItem("auth");
@@ -57,11 +72,6 @@ export default function ReportGenerator() {
     }
   }, [navigate]);
 
-  const [patientName, setPatientName] = useState("");
-  const [age, setAge] = useState({ year: "", month: "", day: "" });
-  const [gender, setGender] = useState("M");
-  const [address, setAddress] = useState("");
-  const [refBy, setRefBy] = useState("");
   const [cbcData, setCbcData] = useState({});
   const [LFT_Data, setLFT_Data] = useState({});
   const [KFT_Data, setKFT_Data] = useState({});
@@ -80,12 +90,6 @@ export default function ReportGenerator() {
   const [HB_Float_Value, set_HB_Float_Value] = useState("");
   const [HB_Percent_Value, set_HB_Percent_Value] = useState("");
   const [HB_value, setHB_value] = useState("");
-
-  const [selectedReports, setSelectedReports] = useState([]);
-
-  const [testDate, setTestDate] = useState("");
-  const [reportDate, setReportDate] = useState("");
-
   const [S_BILLIRUBIN_TOTAL_VAL, SET_S_BILLIRUBIN_TOTAL_VAL] = useState("");
   const [S_BILLIRUBIN_DIRECT_VAL, SET_S_BILLIRUBIN_DIRECT_VAL] = useState("");
   const [S_BILLIRUBIN_INDIRECT_VAL, SET_S_BILLIRUBIN_INDIRECT_VAL] = useState("");
@@ -144,9 +148,6 @@ export default function ReportGenerator() {
     setTestValues(prev => ({ ...prev, [key]: value }));
   };
 
-
-
-
   const [customTests, setCustomTests] = useState([]);
 
   const handleAddTest = (newTest) => {
@@ -164,19 +165,6 @@ export default function ReportGenerator() {
     }
     return [20];
   };
-
-
-
-
-  const [doctorList, setDoctorList] = useState([
-    "DR R  KUMAR",
-    "DR ABHIMANYU KUMAR",
-    "DR C H C PRATAPPUR",
-    "DR B K SAINIK",
-    "DR NANDANI HERBAL HEALTH CARE",
-    "DR SELF"
-  ]);
-  const [newDoctor, setNewDoctor] = useState("");
 
 
   //URINE-CULTURE OPTIONS
@@ -383,36 +371,6 @@ export default function ReportGenerator() {
   }
 
 
-
-
-
-  const handleReportSelection = (report) => {
-    setSelectedReports((prev) =>
-      prev.includes(report)
-        ? prev.filter((r) => r !== report)
-        : [...prev, report]
-    );
-  };
-
-
-
-  const handleAddDoctor = () => {
-    if (newDoctor.trim()) {
-      setDoctorList([...doctorList, newDoctor]);
-      setRefBy(newDoctor);
-      setNewDoctor("");
-    }
-  };
-
-
-
-  //if cbc is selected then HB , kft , lft and widal should not be selected
-  const isDisabled = (report, selectedReports) => {
-    const isCBCSelected = selectedReports.includes("CBC");
-    return report !== "CBC" && report !== "MP card" && isCBCSelected;
-  };
-
-
   const handleGeneratePdf = async () => {
     const formattedDate = new Date().toLocaleDateString("en-GB");
 
@@ -497,249 +455,57 @@ export default function ReportGenerator() {
     <>
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
         <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg p-8">
-          <h1 className="text-2xl headColor font-bold text-center mb-6 text-blue-700">
+          <h1 className="blueText text-2xl headColor font-bold text-center mb-6 text-blue-700">
             LAB REPORT
           </h1>
 
-          {/* Patient Info */}
-          {/* 🩺 Patient Information Section */}
-          <div className="border border-gray-200 rounded-lg p-6 mb-6 shadow-sm bg-gradient-to-br from-gray-50 to-white">
-            <h2 className="text-xl font-semibold text-blue-700 mb-4 text-center border-b pb-2">
-              Patient Information
+          {/* ⭐ Patient Summary Card */}
+          <div className="p-5 bg-white rounded-xl shadow-md border border-gray-200 mb-8">
+
+            <h2 className="blueText text-xl font-bold text-blue-700 mb-4 flex items-center gap-2">
+              <span>🧑‍⚕️</span> Patient Summary
             </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-800">
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Patient Name */}
-              <div className="flex flex-col text-left">
-                <label className="text-gray-700 font-medium mb-1">Patient Name</label>
-                <input
-                  className="border p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
-                  placeholder="Enter patient name"
-                  value={patientName}
-                  onChange={(e) => setPatientName(e.target.value)}
-                />
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <span className="text-xl">👤</span>
+                <p><strong>Name:</strong> {patientName || "Not Provided"}</p>
               </div>
 
-              {/* Gender */}
-              <div className="flex flex-col text-left">
-                <label className="text-gray-700 font-medium mb-1">Gender</label>
-                <select
-                  className="border p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                >
-                  <option value="M">Male</option>
-                  <option value="F">Female</option>
-                  <option value="UNKNOWN">Unknown</option>
-                </select>
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <span className="text-xl">⚥</span>
+                <p><strong>Gender:</strong> {gender}</p>
               </div>
 
-              {/* Age */}
-              <div className="flex flex-col text-left">
-                <label className="text-gray-700 font-medium mb-1">Age</label>
-                <div className="flex gap-2">
-                  <input
-                    className="border p-2 rounded w-1/3 focus:ring-2 focus:ring-blue-400 outline-none"
-                    type="number"
-                    min="0"
-                    placeholder="Years"
-                    value={age.year}
-                    onChange={(e) =>
-                      setAge({ ...age, year: e.target.value ? Number(e.target.value) : "" })
-                    }
-                  />
-                  <input
-                    className="border p-2 rounded w-1/3 focus:ring-2 focus:ring-blue-400 outline-none"
-                    type="number"
-                    min="0"
-                    max="11"
-                    placeholder="Months"
-                    value={age.month}
-                    onChange={(e) =>
-                      setAge({ ...age, month: e.target.value ? Number(e.target.value) : "" })
-                    }
-                  />
-                  <input
-                    className="border p-2 rounded w-1/3 focus:ring-2 focus:ring-blue-400 outline-none"
-                    type="number"
-                    min="0"
-                    max="30"
-                    placeholder="Days"
-                    value={age.day}
-                    onChange={(e) =>
-                      setAge({ ...age, day: e.target.value ? Number(e.target.value) : "" })
-                    }
-                  />
-                </div>
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <span className="text-xl">🎂</span>
+                <p>
+                  <strong>Age:</strong> {`${age.year || 0}y ${age.months || 0}m ${age.days || 0}d`}
+                </p>
               </div>
 
-              {/* Address */}
-              <div className="flex flex-col text-left">
-                <label className="text-gray-700 font-medium mb-1">Address</label>
-                <input
-                  className="border p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
-                  placeholder="Enter address"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                />
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <span className="text-xl">📍</span>
+                <p><strong>Address:</strong> {address || "Not Provided"}</p>
               </div>
 
-              {/* Test Date */}
-              <div className="flex flex-col text-left">
-                <label className="text-gray-700 font-medium mb-1">Test Date</label>
-                <input
-                  type="date"
-                  className="border p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
-                  value={testDate}
-                  onChange={(e) => setTestDate(e.target.value)}
-                />
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <span className="text-xl">🩺</span>
+                <p><strong>Ref. By:</strong> {refBy || "Not Provided"}</p>
               </div>
 
-              {/* Report Date */}
-              <div className="flex flex-col text-left">
-                <label className="text-gray-700 font-medium mb-1">Report Date</label>
-                <input
-                  type="date"
-                  className="border p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
-                  value={reportDate}
-                  onChange={(e) => setReportDate(e.target.value)}
-                />
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <span className="text-xl">📅</span>
+                <p><strong>Test Date:</strong> {testDate ? new Date(testDate).toLocaleDateString("en-GB") : new Date().toLocaleDateString("en-GB")}</p>
               </div>
 
-              {/* Doctor Selection */}
-              <div className="flex flex-col text-left md:col-span-2">
-                <label className="text-gray-700 font-medium mb-1">Referred By</label>
-                <select
-                  className="border p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
-                  value={refBy}
-                  onChange={(e) => setRefBy(e.target.value)}
-                >
-                  <option value="">Select Doctor</option>
-                  {doctorList.map((doc, idx) => (
-                    <option key={idx} value={doc}>
-                      {doc}
-                    </option>
-                  ))}
-                </select>
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <span className="text-xl">🧾</span>
+                <p><strong>Report Date:</strong> {reportDate ? new Date(reportDate).toLocaleDateString("en-GB") : new Date().toLocaleDateString("en-GB")}</p>
               </div>
 
-              {/* Add New Doctor */}
-              <div className="flex gap-2 md:col-span-2">
-                <input
-                  className="border p-2 rounded flex-1 focus:ring-2 focus:ring-blue-400 outline-none"
-                  placeholder="Add new doctor"
-                  value={newDoctor}
-                  onChange={(e) => setNewDoctor(e.target.value)}
-                />
-                <button
-                  onClick={handleAddDoctor}
-                  className="cursPointer greenBtn bg-green-500 text-white px-5 rounded hover:bg-green-600 transition-all"
-                >
-                  Add
-                </button>
-              </div>
             </div>
           </div>
-
-
-          {/* 🧾 Report Selection Section */}
-          <div className="border border-gray-200 rounded-lg p-6 mb-6 shadow-sm bg-gradient-to-br from-gray-50 to-white">
-            <h2 className="text-xl font-semibold text-blue-700 mb-4 text-center border-b pb-2">
-              Select Reports
-            </h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {[
-                "CBC",
-                "HB",
-                "Widal",
-                "MP card",
-                "KFT",
-                "LFT",
-                "S BILLIRUBIN",
-                "S BILLIRUBIN (TOTAL)",
-                "S BILLIRUBIN (direct)",
-                "S BILLIRUBIN (indirect)",
-                "SGPT",
-                "SGOT",
-                "S ALKALINE PHOSHATE",
-                "TOTAL PROTEIN",
-                "ALBUMIN",
-                "GLOBULIN",
-                "ALB/GLOBULIN RATIO",
-                "S. CREATININE",
-                "S. UREA",
-                "S.URIC ACID",
-                "S. CHLORIDE",
-                "S . POTASSIUM",
-                "S . SODIUM",
-                "S. CALCIUM",
-                "URINE-CULTURE & SENSITIVITY",
-                "ESR",
-                "ESR 1st h",
-                "ESR 2nd h",
-                "ESR(average)",
-                "BLOOD SUGAR(F)",
-                "BLOOD SUGAR(R)",
-                "BLOOD SUGAR(PP)",
-                "S. CHOLESTEROL",
-                "S. CHLORI",
-                "CRP IMMUNOTURIDOMETRY",
-                "BT TIME",
-                "CT TIME",
-                "W.B.C COUNT",
-                "DENGUE",
-                "MALARIA PARASITE (Slide Test)",
-                "PREGNANCY",
-                "HCV",
-                "HIV1 & HIV2",
-                "HBsAg",
-                "ABO RH",
-                "V D R L",
-                "H-PYLORI(Ab<combo)",
-                "SPUTAM",
-                "MANTOUX",
-                "R A FACTOR",
-                "ASO Titre",
-                "C R P",
-                "URINE SUGAR",
-                "URINE PROTEIN"
-
-              ].map((r) => {
-                const isSelected = selectedReports.includes(r);
-                const disabled = false;
-
-                return (
-                  <label
-                    key={r}
-                    className={`flex items-center justify-between p-3 border rounded-lg shadow-sm cursor-pointer transition-all
-                        ${disabled
-                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : isSelected
-                          ? "bg-blue-100 border-blue-500 text-blue-700 font-semibold shadow-md"
-                          : "hover:bg-blue-50 hover:shadow-md"
-                      }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={isSelected}
-                        onChange={() => handleReportSelection(r)}
-                        disabled={disabled}
-                        className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                      />
-                      <span className="text-sm md:text-base">{r}</span>
-                    </div>
-
-                    {isSelected && (
-                      <span className="text-blue-600 text-sm font-medium">✓</span>
-                    )}
-                  </label>
-                );
-              })}
-            </div>
-          </div>
-
 
           {/* CBC Inputs only if selected */}
           {selectedReports.includes("CBC") && (
@@ -1432,7 +1198,7 @@ export default function ReportGenerator() {
             <NumberInput label="S. CHOLESTEROL" value={testValues.CHOLESTEROL} onChange={(v) => update("CHOLESTEROL", v)} />
           )}
 
-                    {selectedReports.includes("S. CHLORI") && (
+          {selectedReports.includes("S. CHLORI") && (
             <NumberInput label="S. CHLORI" value={testValues.CHLORI} onChange={(v) => update("CHLORI", v)} />
           )}
 
@@ -1498,7 +1264,7 @@ export default function ReportGenerator() {
 
           {selectedReports.includes("V D R L") && (
             <PNSelect label="V D R L" value={testValues.VDRL} onChange={(v) => update("VDRL", v)} />
-          )} 
+          )}
 
           {selectedReports.includes("H-PYLORI(Ab<combo)") && (
             <PNSelect label="H-PYLORI(Ab<combo)" value={testValues.HPYLORI} onChange={(v) => update("HPYLORI", v)} />
@@ -1506,26 +1272,26 @@ export default function ReportGenerator() {
 
           {selectedReports.includes("SPUTAM") && (
             <PNSelect label="SPUTAM" value={testValues.SPUTAM} onChange={(v) => update("SPUTAM", v)} />
-          )}    
+          )}
 
           {selectedReports.includes("MANTOUX") && (
             <PNSelect label="MANTOUX" value={testValues.MANTOUX} onChange={(v) => update("MANTOUX", v)} />
-          )}   
+          )}
 
 
           {selectedReports.includes("R A FACTOR") && (
             <PNSelect label="R A FACTOR" value={testValues.RA_FACTOR} onChange={(v) => update("RA_FACTOR", v)} />
-          )} 
+          )}
 
 
           {selectedReports.includes("ASO Titre") && (
             <PNSelect label="ASO Titre" value={testValues.ASO_TITRE} onChange={(v) => update("ASO_TITRE", v)} />
-          )}    
+          )}
 
 
           {selectedReports.includes("C R P") && (
             <PNSelect label="C R P" value={testValues.CRP_SIMPLE} onChange={(v) => update("CRP_SIMPLE", v)} />
-          )}  
+          )}
 
 
           {/* SPECIAL SELECTS */}
@@ -1533,7 +1299,7 @@ export default function ReportGenerator() {
             <Select
               label="ABO RH"
               value={testValues.ABO}
-              options={["(A) POSITIVE", "(A) NEGATIVE", "(B) POSITIVE", "(B)NEGATIVE", "(O) POSITIVE", "(O)NEGATIVE", "(AB) POSITIVE", "(AB)NEGATIVE"]}
+              options={["(A) POSITIVE", "(A) NEGATIVE", "(B) POSITIVE", "(B) NEGATIVE", "(O) POSITIVE", "(O) NEGATIVE", "(AB) POSITIVE", "(AB) NEGATIVE"]}
               onChange={(v) => update("ABO", v)}
             />
           )}
@@ -1542,7 +1308,7 @@ export default function ReportGenerator() {
             <Select
               label="URINE SUGAR"
               value={testValues.URINE_SUGAR}
-              options={["NEGATIVE","NILL", "TRACE", "+", "++", "+++"]}
+              options={["NEGATIVE", "NILL", "TRACE", "+", "++", "+++"]}
               onChange={(v) => update("URINE_SUGAR", v)}
             />
           )}
@@ -1550,7 +1316,7 @@ export default function ReportGenerator() {
             <Select
               label="URINE PROTEIN"
               value={testValues.URINE_PROTEIN}
-              options={["NEGATIVE","NILL", "TRACE", "+", "++", "+++"]}
+              options={["NEGATIVE", "NILL", "TRACE", "+", "++", "+++"]}
               onChange={(v) => update("URINE_PROTEIN", v)}
             />
           )}
@@ -1606,8 +1372,7 @@ export default function ReportGenerator() {
                                 px-4 py-2 rounded-lg
                                 bg-red-500 text-white 
                                 hover:bg-red-600 active:scale-95 
-                                transition-all
-          "
+                                transition-all"
                   >
                     <span>Remove</span>
                   </button>
@@ -1616,12 +1381,31 @@ export default function ReportGenerator() {
             </div>
           </div>
 
+          {/* Action Buttons */}
+          <div className="mt-8 flex flex-col md:flex-row gap-4">
 
+            {/* Back Button */}
+            <button
+              onClick={() => navigate('/report')}
+              className="grayBtn w-full md:w-1/2 px-6 py-3 rounded-lg 
+               bg-gray-300 text-gray-800 font-medium 
+               hover:bg-gray-400 transition-all cursor-pointer"
+            >
+              ← Back
+            </button>
 
-          {/* Button */}
-          <button onClick={handleGeneratePdf} className="blueBtn cursPointer w-full mt-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-            Generate Report (Preview)
-          </button>
+            {/* Generate Button */}
+            <button
+              onClick={handleGeneratePdf}
+              className="blueBtn w-full md:w-1/2 px-6 py-3 rounded-lg 
+               bg-blue-600 text-white font-semibold 
+               hover:bg-blue-700 shadow-md transition-all cursor-pointer"
+            >
+              Generate Report (Preview)
+            </button>
+
+          </div>
+
         </div>
 
 
