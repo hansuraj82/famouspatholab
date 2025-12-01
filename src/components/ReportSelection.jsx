@@ -825,14 +825,19 @@ export default function ReportSelection() {
     const [showDropdown, setShowDropdown] = useState(false);
 
 
-    const [doctorList, setDoctorList] = useState([
-        "DR R  KUMAR",
-        "DR ABHIMANYU KUMAR",
-        "DR C H C PRATAPPUR",
-        "DR B K SAINIK",
-        "DR NANDANI HERBAL HEALTH CARE",
-        "DR SELF",
-    ]);
+    const [doctorList, setDoctorList] = useState(() => {
+        const saved = localStorage.getItem("doctor-list");
+        return saved
+            ? JSON.parse(saved)
+            : [
+                "DR R  KUMAR",
+                "DR ABHIMANYU KUMAR",
+                "DR C H C PRATAPPUR",
+                "DR B K SAINIK",
+                "DR NANDANI HERBAL HEALTH CARE",
+                "DR SELF"
+            ];
+    });
 
     useEffect(() => {
         localStorage.setItem("doctor-list", JSON.stringify(doctorList));
