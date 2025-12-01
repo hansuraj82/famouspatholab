@@ -109,6 +109,9 @@ export default function ReportGenerator() {
   const [sCalciumVal, setSCalciumVal] = useState("");
 
 
+
+
+
   const [testValues, setTestValues] = useState({
     ESR: "",
     ESR_1H: "",
@@ -213,6 +216,19 @@ export default function ReportGenerator() {
   const removeAntibiotic = (item) => {
     setAntibiotics(antibiotics.filter(a => a !== item));
   };
+
+
+  const [searchLeft, setSearchLeft] = useState("");
+  const [searchRight, setSearchRight] = useState("");
+
+  const filteredLeft = antibiotics.filter((item) =>
+    item.toLowerCase().includes(searchLeft.toLowerCase())
+  );
+
+  const filteredRight = antibiotics.filter((item) =>
+    item.toLowerCase().includes(searchRight.toLowerCase())
+  );
+
 
 
 
@@ -511,7 +527,7 @@ export default function ReportGenerator() {
           {selectedReports.includes("CBC") && (
             <>
               <h2 className="font-semibold mb-2 text-gray-700">CBC Values</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4  border p-3 rounded">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4  border p-3 rounded max-h-[360px] overflow-auto">
                 {[...CBC_MAIN, ...DIFFERENTIAL_WBC].map((field) => (
                   <div key={field.key} className="flex flex-col">
                     <label htmlFor={field.key} className="text-sm font-medium text-gray-700 mb-1">{field.key} </label>
@@ -1107,32 +1123,67 @@ export default function ReportGenerator() {
                     </div>
 
                     {/* Antibiotic List with Remove */}
-                    <div className="space-y-2 max-h-[260px] overflow-auto pr-2">
-                      {antibiotics.map((item, index) => (
-                        <div
-                          key={index}
-                          className="flex justify-between items-center p-2 border rounded-lg bg-white shadow-sm hover:shadow transition"
-                        >
-                          <span className="font-medium text-gray-700">{item}</span>
-                          <button
-                            onClick={() => removeAntibiotic(item)}
-                            className="redBtn cursPointer bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                    {/* LEFT PANEL — Antibiotics List */}
+                
+
+                      {/* 🔍 Search Bar */}
+                      <input
+                        type="text"
+                        value={searchLeft}
+                        onChange={(e) => setSearchLeft(e.target.value)}
+                        placeholder="Search antibiotics..."
+                        className="border p-2 rounded-lg w-full mb-3 outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+
+                      {/* FILTERED LIST */}
+                      <div className="space-y-2 max-h-[380px] overflow-auto pr-2">
+
+                        {filteredLeft.length === 0 && (
+                          <p className="text-gray-500 text-sm">No matching antibiotics.</p>
+                        )}
+
+                        {filteredLeft.map((item, index) => (
+                          <div
+                            key={index}
+                            className="flex justify-between items-center p-2 border rounded-lg bg-white shadow-sm hover:shadow transition"
                           >
-                            Remove
-                          </button>
-                        </div>
-                      ))}
-                    </div>
+                            <span className="font-medium text-gray-700">{item}</span>
+                            <button
+                              onClick={() => removeAntibiotic(item)}
+                              className="redBtn cursPointer bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    
+
                   </div>
 
-                  {/* RIGHT PANEL — SENSITIVITY INPUTS */}
+                  {/* RIGHT PANEL — Sensitivity Inputs */}
                   <div className="bg-gray-50 p-5 rounded-xl border shadow">
-                    <h2 className="text-lg font-semibold text-blue-700 mb-4">
+                    <h2 className="text-lg font-semibold text-blue-700 mb-3">
                       Sensitivity Values
                     </h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[380px] overflow-auto pr-2">
-                      {antibiotics.map((name) => (
+                    {/* 🔍 Search Bar */}
+                    <input
+                      type="text"
+                      value={searchRight}
+                      onChange={(e) => setSearchRight(e.target.value)}
+                      placeholder="Search antibiotics..."
+                      className="border p-2 rounded-lg w-full mb-3 outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+
+                    {/* FILTERED SENSITIVITY INPUTS */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[450px] overflow-auto pr-2">
+
+                      {filteredRight.length === 0 && (
+                        <p className="text-gray-500 text-sm col-span-2">No matching results.</p>
+                      )}
+
+                      {filteredRight.map((name) => (
                         <div
                           key={name}
                           className="p-3 border rounded-xl bg-white shadow-sm hover:shadow"
@@ -1154,6 +1205,10 @@ export default function ReportGenerator() {
                       ))}
                     </div>
                   </div>
+
+
+
+
                 </div>
               )}
             </div>
