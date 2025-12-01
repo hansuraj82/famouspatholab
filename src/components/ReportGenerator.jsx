@@ -480,7 +480,7 @@ export default function ReportGenerator() {
               <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                 <span className="text-xl">🎂</span>
                 <p>
-                  <strong>Age:</strong> {`${age.year || 0}y ${age.months || 0}m ${age.days || 0}d`}
+                  <strong>Age:</strong> {`${age.year || 0}y ${age.month || 0}m ${age.day || 0}d`}
                 </p>
               </div>
 
@@ -1382,12 +1382,12 @@ export default function ReportGenerator() {
           </div>
 
           {/* Action Buttons */}
-          <div className="mt-8 flex flex-col md:flex-row gap-4">
+          <div className="sticky bottom-0  mt-8 p-2 flex flex-col md:flex-row gap-4">
 
             {/* Back Button */}
             <button
               onClick={() => navigate('/report')}
-              className="grayBtn w-full md:w-1/2 px-6 py-3 rounded-lg 
+              className="grayBtn text-white w-full md:w-1/2 px-6 py-3 rounded-lg 
                bg-gray-300 text-gray-800 font-medium 
                hover:bg-gray-400 transition-all cursor-pointer"
             >
