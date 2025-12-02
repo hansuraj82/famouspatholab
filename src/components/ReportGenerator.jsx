@@ -40,21 +40,6 @@ export default function ReportGenerator() {
 
   //if a user is logged in then this page is accessible otherwise you will be redirected to login page
   const navigate = useNavigate();
-  const { state } = useLocation();
-
-  // if (!state?.selectedReports) {
-  //   navigate("/report/select");
-  //   return null;
-  // }
-
-  const selectedReports = state.selectedReports;
-  let patientName = state.patientName;
-  let age = state.age;
-  let gender = state.gender;
-  let address = state.address;
-  let refBy = state.refBy;
-  let testDate = state.testDate;
-  let reportDate = state.reportDate;
 
   useEffect(() => {
     const stored = localStorage.getItem("auth");
@@ -71,6 +56,29 @@ export default function ReportGenerator() {
       navigate("/login");
     }
   }, [navigate]);
+
+
+    const [selectedReports, setSelectedReports] = useState([]);
+  const [patientName, setPatientName] = useState("");
+  const [age, setAge] = useState({ year: "", month: "", day: "" });
+  const [gender, setGender] = useState("M");
+  const [address, setAddress] = useState("");
+  const [refBy, setRefBy] = useState("");
+  const [testDate, setTestDate] = useState("");
+  const [reportDate, setReportDate] = useState("");
+
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("report-selection") || "{}");
+
+    setPatientName(saved.patientName || "");
+    setAge(saved.age || { year: "", month: "", day: "" });
+    setGender(saved.gender || "M");
+    setAddress(saved.address || "");
+    setRefBy(saved.refBy || "");
+    setTestDate(saved.testDate || "");
+    setReportDate(saved.reportDate || "");
+    setSelectedReports(saved.selectedReports || []);
+  }, []);
 
   const [cbcData, setCbcData] = useState({});
   const [LFT_Data, setLFT_Data] = useState({});
@@ -107,9 +115,6 @@ export default function ReportGenerator() {
   const [sPotassiumVal, setSPotassiumVal] = useState("");
   const [sSodiumVal, setSSodiumVal] = useState("");
   const [sCalciumVal, setSCalciumVal] = useState("");
-
-
-
 
 
   const [testValues, setTestValues] = useState({
@@ -1124,41 +1129,37 @@ export default function ReportGenerator() {
 
                     {/* Antibiotic List with Remove */}
                     {/* LEFT PANEL — Antibiotics List */}
-                
+                    {/* 🔍 Search Bar */}
+                    <input
+                      type="text"
+                      value={searchLeft}
+                      onChange={(e) => setSearchLeft(e.target.value)}
+                      placeholder="Search antibiotics..."
+                      className="border p-2 rounded-lg w-full mb-3 outline-none focus:ring-2 focus:ring-blue-500"
+                    />
 
-                      {/* 🔍 Search Bar */}
-                      <input
-                        type="text"
-                        value={searchLeft}
-                        onChange={(e) => setSearchLeft(e.target.value)}
-                        placeholder="Search antibiotics..."
-                        className="border p-2 rounded-lg w-full mb-3 outline-none focus:ring-2 focus:ring-blue-500"
-                      />
+                    {/* FILTERED LIST */}
+                    <div className="space-y-2 max-h-[380px] overflow-auto pr-2">
 
-                      {/* FILTERED LIST */}
-                      <div className="space-y-2 max-h-[380px] overflow-auto pr-2">
+                      {filteredLeft.length === 0 && (
+                        <p className="text-gray-500 text-sm">No matching antibiotics.</p>
+                      )}
 
-                        {filteredLeft.length === 0 && (
-                          <p className="text-gray-500 text-sm">No matching antibiotics.</p>
-                        )}
-
-                        {filteredLeft.map((item, index) => (
-                          <div
-                            key={index}
-                            className="flex justify-between items-center p-2 border rounded-lg bg-white shadow-sm hover:shadow transition"
+                      {filteredLeft.map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex justify-between items-center p-2 border rounded-lg bg-white shadow-sm hover:shadow transition"
+                        >
+                          <span className="font-medium text-gray-700">{item}</span>
+                          <button
+                            onClick={() => removeAntibiotic(item)}
+                            className="redBtn cursPointer bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
                           >
-                            <span className="font-medium text-gray-700">{item}</span>
-                            <button
-                              onClick={() => removeAntibiotic(item)}
-                              className="redBtn cursPointer bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    
-
+                            Remove
+                          </button>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
                   {/* RIGHT PANEL — Sensitivity Inputs */}
@@ -1205,10 +1206,6 @@ export default function ReportGenerator() {
                       ))}
                     </div>
                   </div>
-
-
-
-
                 </div>
               )}
             </div>
