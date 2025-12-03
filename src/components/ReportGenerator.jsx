@@ -1105,7 +1105,7 @@ export default function ReportGenerator() {
 
           {/* URINE CULTURE TEST */}
           {selectedReports.includes("URINE-CULTURE & SENSITIVITY") && (
-            <div className="p-6 max-w-3xl mx-auto border rounded-2xl shadow-lg bg-white">
+            <div className="p-6 my-2 max-w-3xl mx-auto border rounded-2xl shadow-lg bg-white">
               <h2 className="text-2xl font-bold mb-4 text-center text-blue-700">
                 URINE CULTURE & SENSITIVITY
               </h2>
