@@ -29,6 +29,13 @@
     background-color: oklch(0.446 0.03 256.802);
 }
 
+.whiteBtn {
+    background-color: rgb(42, 126, 200);
+}
+.whiteBtn:hover {
+    background-color: rgb(11, 101, 179);
+}
+
 
 @keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-10px); }

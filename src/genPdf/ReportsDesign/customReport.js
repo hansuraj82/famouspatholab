@@ -29,8 +29,8 @@ export function CustomTestReport(doc, y, tests) {
 
         } else {
             // 🔹 Numeric case → use arrow logic
-            arrowVal = getArrowValue(field.value, field.refRange, doc, x-5, y - 3.5);
-            getValOrDash(field, field.value, doc, x, y, arrowVal);
+            arrowVal = getArrowValue(field.value, field.refRange, doc, x-10, y - 3.5);
+            getValOrDash(field, field.value, doc, x-5, y, arrowVal);
         }
         
         // 🔹 REF RANGE + UNIT

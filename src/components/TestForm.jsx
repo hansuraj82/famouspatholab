@@ -44,7 +44,7 @@ export default function TestForm({ onAdd }) {
           p-2 rounded-md w-full transition-all duration-200
         "
         value={test}
-        onChange={(e) => setTest(e.target.value)}
+        onChange={(e) => setTest((e.target.value).toUpperCase())}
       />
     </div>
 
@@ -57,7 +57,7 @@ export default function TestForm({ onAdd }) {
           p-2 rounded-md w-full transition-all duration-200
         "
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => setValue((e.target.value).toUpperCase())}
       />
     </div>
 

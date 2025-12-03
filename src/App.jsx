@@ -10,6 +10,7 @@ import Layout from "./Layout";
 import ProtectedRoute from "./components/ProtectRoute/ProtectedRoute";
 import PageNotFound from "./components/PageNotFound";
 import ReportSelection from "./components/ReportSelection";
+import ErrorBoundary from "./ErrorBoundary";
 
 
 const router = createBrowserRouter([
@@ -24,7 +25,9 @@ const router = createBrowserRouter([
         path: "/report",
         element: (
           <ProtectedRoute>
+            <ErrorBoundary>
             <ReportSelection />
+            </ErrorBoundary>
           </ProtectedRoute>
         ),
       },
@@ -32,7 +35,9 @@ const router = createBrowserRouter([
         path: "/report/form",
         element: (
           <ProtectedRoute>
+            <ErrorBoundary>
             <ReportGenerator/>
+            </ErrorBoundary>
           </ProtectedRoute>
         )
       },
@@ -40,11 +45,13 @@ const router = createBrowserRouter([
         path: "/history",
         element: (
           <ProtectedRoute>
+            <ErrorBoundary>
             <ReportHistory />
+            </ErrorBoundary>
           </ProtectedRoute>
         ),
       },
-      // ⭐ Catch-all 404 route
+      //  Catch-all 404 route
       { path: "*", element: <PageNotFound /> },
     ],
   },    

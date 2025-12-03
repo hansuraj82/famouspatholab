@@ -13,8 +13,8 @@ export function sSodium_Design(doc, y, sSodiumVal){
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(sSodiumVal, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, sSodiumVal, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(sSodiumVal, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, sSodiumVal, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;

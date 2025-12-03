@@ -11,8 +11,8 @@ export function ESR_Design(doc, y, ESR_VAL) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(ESR_VAL, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, ESR_VAL, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(ESR_VAL, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, ESR_VAL, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;
@@ -31,8 +31,8 @@ export function ESR1_Design(doc, y, ESR1_VAL) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(ESR1_VAL, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, ESR1_VAL, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(ESR1_VAL, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, ESR1_VAL, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;
@@ -51,8 +51,8 @@ export function ESR2_Design(doc, y, ESR2_VAL) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(ESR2_VAL, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, ESR2_VAL, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(ESR2_VAL, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, ESR2_VAL, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;
@@ -70,8 +70,8 @@ export function ESR_Average_Design(doc, y, ESR_Average_VAL) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(ESR_Average_VAL, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, ESR_Average_VAL, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(ESR_Average_VAL, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, ESR_Average_VAL, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;
@@ -90,8 +90,8 @@ export function BLOOD_SUGAR_F_Design(doc, y, BLOOD_SUGAR_F_VAL) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(BLOOD_SUGAR_F_VAL, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, BLOOD_SUGAR_F_VAL, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(BLOOD_SUGAR_F_VAL, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, BLOOD_SUGAR_F_VAL, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;
@@ -110,8 +110,8 @@ export function BLOOD_SUGAR_R_Design(doc, y, BLOOD_SUGAR_R_VAL) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(BLOOD_SUGAR_R_VAL, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, BLOOD_SUGAR_R_VAL, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(BLOOD_SUGAR_R_VAL, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, BLOOD_SUGAR_R_VAL, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;
@@ -129,8 +129,8 @@ export function BLOOD_SUGAR_PP_Design(doc, y, BLOOD_SUGAR_PP_VAL) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(BLOOD_SUGAR_PP_VAL, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, BLOOD_SUGAR_PP_VAL, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(BLOOD_SUGAR_PP_VAL, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, BLOOD_SUGAR_PP_VAL, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;
@@ -148,8 +148,8 @@ export function S_CHOLESTEROL_Design(doc, y, S_CHOLESTEROL_VAL) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(S_CHOLESTEROL_VAL, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, S_CHOLESTEROL_VAL, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(S_CHOLESTEROL_VAL, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, S_CHOLESTEROL_VAL, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;
@@ -167,8 +167,8 @@ export function S_CHLORI_Design(doc, y, S_CHLORI_VAL) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(S_CHLORI_VAL, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, S_CHLORI_VAL, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(S_CHLORI_VAL, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, S_CHLORI_VAL, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;
@@ -186,8 +186,8 @@ export function CRPIMMUN_Design(doc, y, CRPIMMUN_VAL) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(CRPIMMUN_VAL, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, CRPIMMUN_VAL, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(CRPIMMUN_VAL, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, CRPIMMUN_VAL, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;
@@ -206,8 +206,8 @@ export function BT_TIME_Design(doc, y, BT_TIME_VAL) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(BT_TIME_VAL, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, BT_TIME_VAL, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(BT_TIME_VAL, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, BT_TIME_VAL, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;
@@ -225,8 +225,8 @@ export function CT_TIME_Design(doc, y, CT_TIME_VAL) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(CT_TIME_VAL, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, CT_TIME_VAL, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(CT_TIME_VAL, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, CT_TIME_VAL, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;
@@ -245,8 +245,8 @@ export function WBC_COUNT_Design(doc, y, WBC_COUNT_VAL) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(WBC_COUNT_VAL, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, WBC_COUNT_VAL, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(WBC_COUNT_VAL, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, WBC_COUNT_VAL, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;

@@ -13,8 +13,8 @@ export function sCalcium_Design(doc, y, sCalciumVal) {
         doc.setFont("Cambria", "normal")
         doc.text(field.key, 17, y);
 
-        arrowVal = getArrowValue(sCalciumVal, field.range, doc, 85, y - 3.5);
-        getValOrDash(field, sCalciumVal, doc, 90, y, arrowVal)
+        arrowVal = getArrowValue(sCalciumVal, field.range, doc, 80, y - 3.5);
+        getValOrDash(field, sCalciumVal, doc, 85, y, arrowVal)
         doc.text(field.range, 130, y);
         doc.text(field.unit, 175, y, { align: "left" });
         y += 10;

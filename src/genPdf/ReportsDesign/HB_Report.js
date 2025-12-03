@@ -18,9 +18,9 @@ export function HB_Report_Design(doc, HB_value, y) {
             HB_valueOfPercent = HB_value.split("/")[1];
             
         }   
-        let x = 90;
-        arrowVal = getArrowValue(HB_valueOfPercent, field.range, doc, 85, y - 4);
-        if (!arrowVal) x = 85
+        let x = 85;
+        arrowVal = getArrowValue(HB_valueOfPercent, field.range, doc, 80, y - 4);
+        
         
         getValOrDash(field.key, HB_value, doc, x, y, arrowVal);
         doc.setFont("Cambria", "normal")

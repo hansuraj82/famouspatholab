@@ -58,7 +58,7 @@ export default function ReportGenerator() {
   }, [navigate]);
 
 
-    const [selectedReports, setSelectedReports] = useState([]);
+  const [selectedReports, setSelectedReports] = useState([]);
   const [patientName, setPatientName] = useState("");
   const [age, setAge] = useState({ year: "", month: "", day: "" });
   const [gender, setGender] = useState("M");
@@ -156,6 +156,7 @@ export default function ReportGenerator() {
     setTestValues(prev => ({ ...prev, [key]: value }));
   };
 
+  const [showCustomTests, setShowCustomTests] = useState(false);
   const [customTests, setCustomTests] = useState([]);
 
   const handleAddTest = (newTest) => {
@@ -481,52 +482,79 @@ export default function ReportGenerator() {
           </h1>
 
           {/* ⭐ Patient Summary Card */}
-          <div className="p-5 bg-white rounded-xl shadow-md border border-gray-200 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-300 p-4 mb-6">
 
-            <h2 className="blueText text-xl font-bold text-blue-700 mb-4 flex items-center gap-2">
-              <span>🧑‍⚕️</span> Patient Summary
+            {/* Header */}
+            <h2 className="text-lg font-semibold text-gray-800 mb-3">
+              Patient Summary
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-800">
 
-              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <span className="text-xl">👤</span>
-                <p><strong>Name:</strong> {patientName || "Not Provided"}</p>
-              </div>
+            {/* Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-700">
 
-              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <span className="text-xl">⚥</span>
-                <p><strong>Gender:</strong> {gender}</p>
-              </div>
-
-              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <span className="text-xl">🎂</span>
-                <p>
-                  <strong>Age:</strong> {`${age.year || 0}y ${age.month || 0}m ${age.day || 0}d`}
+              {/* Name */}
+              <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
+                <p className="text-xs uppercase text-gray-500 tracking-wide">Name</p>
+                <p className="text-sm font-medium text-gray-800">
+                  {patientName || "Not Provided"}
                 </p>
               </div>
 
-              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <span className="text-xl">📍</span>
-                <p><strong>Address:</strong> {address || "Not Provided"}</p>
+              {/* Gender */}
+              <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
+                <p className="text-xs uppercase text-gray-500 tracking-wide">Gender</p>
+                <p className="text-sm font-medium text-gray-800">
+                  {gender || "Not Provided"}
+                </p>
               </div>
 
-              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <span className="text-xl">🩺</span>
-                <p><strong>Ref. By:</strong> {refBy || "Not Provided"}</p>
+              {/* Age */}
+              <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
+                <p className="text-xs uppercase text-gray-500 tracking-wide">Age</p>
+                <p className="text-sm font-medium text-gray-800">
+                  {`${age.year || 0}y ${age.month || 0}m ${age.day || 0}d`}
+                </p>
               </div>
 
-              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <span className="text-xl">📅</span>
-                <p><strong>Test Date:</strong> {testDate ? new Date(testDate).toLocaleDateString("en-GB") : new Date().toLocaleDateString("en-GB")}</p>
+              {/* Address */}
+              <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
+                <p className="text-xs uppercase text-gray-500 tracking-wide">Address</p>
+                <p className="text-sm font-medium text-gray-800">
+                  {address || "Not Provided"}
+                </p>
               </div>
 
-              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <span className="text-xl">🧾</span>
-                <p><strong>Report Date:</strong> {reportDate ? new Date(reportDate).toLocaleDateString("en-GB") : new Date().toLocaleDateString("en-GB")}</p>
+              {/* Ref. By */}
+              <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
+                <p className="text-xs uppercase text-gray-500 tracking-wide">Referred By</p>
+                <p className="text-sm font-medium text-gray-800">
+                  {refBy || "Not Provided"}
+                </p>
+              </div>
+
+              {/* Test Date */}
+              <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
+                <p className="text-xs uppercase text-gray-500 tracking-wide">Test Date</p>
+                <p className="text-sm font-medium text-gray-800">
+                  {testDate
+                    ? new Date(testDate).toLocaleDateString("en-GB")
+                    : new Date().toLocaleDateString("en-GB")}
+                </p>
+              </div>
+
+              {/* Report Date */}
+              <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
+                <p className="text-xs uppercase text-gray-500 tracking-wide">Report Date</p>
+                <p className="text-sm font-medium text-gray-800">
+                  {reportDate
+                    ? new Date(reportDate).toLocaleDateString("en-GB")
+                    : new Date().toLocaleDateString("en-GB")}
+                </p>
               </div>
 
             </div>
           </div>
+
 
           {/* CBC Inputs only if selected */}
           {selectedReports.includes("CBC") && (
@@ -1373,65 +1401,74 @@ export default function ReportGenerator() {
             />
           )}
 
+          <button
+            onClick={() => setShowCustomTests(prev => !prev)}
+            className="cursPointer whiteBtn px-4 py-2 my-2 text-sm font-medium rounded-lg 
+             bg-gray-100 hover:bg-gray-200 text-white 
+             border border-gray-300 transition"
+          >
+            {showCustomTests ? "Hide Custom Tests" : "Add Custom Test"}
+          </button>
 
 
+          {showCustomTests && (
+            <>
+              <div>
+                <TestForm onAdd={handleAddTest} />
+              </div>
 
+              {/* SHOW ADDED TESTS */}
+              <div className="mt-6">
+                {customTests.length > 0 && (
+                  <h3 className="text-xl font-semibold mb-3 border-b pb-2">
+                    Custom Tests Added
+                  </h3>
+                )}
 
-
-
-          <TestForm onAdd={handleAddTest} />
-
-          {/* SHOW ADDED TESTS */}
-          <div className="mt-6">
-            {customTests.length > 0 && (
-              <h3 className="text-xl font-semibold mb-3 border-b pb-2">
-                Custom Tests Added
-              </h3>
-            )}
-
-            <div className="space-y-4">
-              {customTests.map((test, index) => (
-                <div
-                  key={index}
-                  className="
+                <div className="space-y-4">
+                  {customTests.map((test, index) => (
+                    <div
+                      key={index}
+                      className="
           p-4 rounded-xl border bg-white shadow-sm 
           hover:shadow-md transition-shadow
           flex flex-col sm:flex-row sm:items-center sm:justify-between
         "
-                >
-                  {/* LEFT SIDE */}
-                  <div className="space-y-1">
-                    <p className="text-lg font-bold text-gray-800">{test.test}</p>
+                    >
+                      {/* LEFT SIDE */}
+                      <div className="space-y-1">
+                        <p className="text-lg font-bold text-gray-800">{test.test}</p>
 
-                    <div className="text-sm text-gray-600 flex flex-wrap gap-x-4 gap-y-1">
-                      <span>
-                        <span className="font-semibold">Value:</span> {test.value}
-                      </span>
-                      <span>
-                        <span className="font-semibold">Range:</span> {test.refRange}
-                      </span>
-                      <span>
-                        <span className="font-semibold">Unit:</span> {test.unit}
-                      </span>
-                    </div>
-                  </div>
+                        <div className="text-sm text-gray-600 flex flex-wrap gap-x-4 gap-y-1">
+                          <span>
+                            <span className="font-semibold">Value:</span> {test.value}
+                          </span>
+                          <span>
+                            <span className="font-semibold">Range:</span> {test.refRange}
+                          </span>
+                          <span>
+                            <span className="font-semibold">Unit:</span> {test.unit}
+                          </span>
+                        </div>
+                      </div>
 
-                  {/* RIGHT SIDE (REMOVE BUTTON) */}
-                  <button
-                    onClick={() => handleRemoveTest(index)}
-                    className=" cursPointer redBtn mt-3 sm:mt-0
+                      {/* RIGHT SIDE (REMOVE BUTTON) */}
+                      <button
+                        onClick={() => handleRemoveTest(index)}
+                        className=" cursPointer redBtn mt-3 sm:mt-0
                                 flex items-center gap-1
                                 px-4 py-2 rounded-lg
                                 bg-red-500 text-white 
                                 hover:bg-red-600 active:scale-95 
                                 transition-all"
-                  >
-                    <span>Remove</span>
-                  </button>
+                      >
+                        <span>Remove</span>
+                      </button>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            </>)}
 
           {/* Action Buttons */}
           <div className="sticky bottom-0  mt-8 p-2 flex flex-col md:flex-row gap-4">
