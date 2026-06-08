@@ -383,21 +383,132 @@ function MiniInput({ placeholder, value, setValue }) {
 }
 
 function SelectBox({ label, value, setValue, options }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+    const dropdownRef = useRef(null);
+
+    // Sync search input text with the selected value when it updates
+    useEffect(() => {
+        setSearchTerm(value || "");
+    }, [value]);
+
+    // Close dropdown on outside click
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    // Filter array based on what the user types
+    const filteredOptions = options.filter((opt) => {
+        const optionText = typeof opt === "object" ? opt.name || "" : opt;
+        return optionText.toString().toLowerCase().includes(searchTerm.toLowerCase());
+    });
+
+    // Handle when a selection is made
+    const handleSelect = (itemValue, itemText) => {
+        setValue(itemValue);
+        setSearchTerm(itemText);
+        setIsOpen(false);
+    };
+
     return (
-        <div>
-            <label className="font-medium">{label}</label>
-            <select
-                className="border w-full p-2 rounded mt-1 focus:ring-2 focus:ring-blue-400"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-            >
-                <option value="">--Select--</option>
-                {options.map((o, i) => (
-                    <option key={i} value={o}>
-                        {o}
-                    </option>
-                ))}
-            </select>
+        <div className="relative flex flex-col" ref={dropdownRef}>
+            <label className="font-medium  ">{label}</label>
+            
+            <div className="relative ">
+                <input
+                    type="text"
+                    className="border w-full p-2 rounded mt-1 focus:ring-2 focus:ring-blue-400"
+                    placeholder="Search or select..."
+                    value={searchTerm}
+                    onFocus={() => setIsOpen(true)}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        setValue(e.target.value);
+                        setIsOpen(true);
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === "Escape") {
+                            setIsOpen(false);
+                        }
+                    }}
+                />
+
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                    {value && (
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setValue("");
+                                setSearchTerm("");
+                            }}
+                            className="text-gray-400 hover:text-gray-600 text-xs px-1"
+                        >
+                            ✕
+                        </button>
+                    )}
+                    <span className={`text-gray-400 text-xs pointer-events-none transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}>
+                        ▼
+                    </span>
+                </div>
+            </div>
+
+            {/* Floating Dropdown List */}
+            {isOpen && (
+                <div className="absolute left-0 right-0 top-[100%] z-50 mt-1 bg-white border border-gray-200 rounded shadow-lg max-h-60 overflow-y-auto flex flex-col">
+                    {/* Clear selection choice */}
+                    <button
+                        type="button"
+                        tabIndex={0}
+                        onClick={() => handleSelect("", "")}
+                        className="w-full text-left p-2 text-sm italic text-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none border-b border-gray-50"
+                    >
+                        -- Clear Selection --
+                    </button>
+
+                    {filteredOptions.length > 0 ? (
+                        filteredOptions.map((opt, i) => {
+                            const itemText = typeof opt === "object" ? opt.name : opt;
+                            const itemValue = typeof opt === "object" ? opt.id || opt.name : opt;
+                            const isSelected = value === itemValue;
+
+                            return (
+                                <button
+                                    key={i}
+                                    type="button"
+                                    tabIndex={0}
+                                    onClick={() => handleSelect(itemValue, itemText)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter" || e.key === " ") {
+                                            e.preventDefault();
+                                            handleSelect(itemValue, itemText);
+                                        }
+                                        if (e.key === "Escape") {
+                                            setIsOpen(false);
+                                        }
+                                    }}
+                                    className={`w-full text-left p-2 text-sm cursor-pointer transition-colors focus:outline-none ${
+                                        isSelected 
+                                            ? "bg-blue-50 text-blue-600 font-medium focus:bg-blue-100" 
+                                            : "text-gray-700 hover:bg-gray-100 focus:bg-gray-100"
+                                    }`}
+                                >
+                                    {itemText}
+                                </button>
+                            );
+                        })
+                    ) : (
+                        <div className="p-2 text-sm text-gray-400 italic">
+                            No matches found
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }
