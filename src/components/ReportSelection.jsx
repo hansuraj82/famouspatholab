@@ -207,12 +207,18 @@ export default function ReportSelection() {
                     <Input label="Patient Name" value={patientName} setValue={setPatientName} />
 
                     {/* GENDER */}
-                    <SelectBox
-                        label="Gender"
+                    <div>
+                    <label className="font-medium">Gender</label>
+                    <select
                         value={gender}
-                        setValue={setGender}
-                        options={["M", "F", "UNKNOWN"]}
-                    />
+                        onChange={(e) => setGender(e.target.value)}
+                        className="border w-full p-2 rounded mt-1 focus:ring-2 focus:ring-blue-400"
+                    >
+                        <option value="M">M</option>
+                        <option value="F">F</option>
+                        <option value="UNKNOWN">UNKNOWN</option>
+                    </select>
+                    </div>
 
                     {/* AGE */}
                     <div>
@@ -287,7 +293,7 @@ export default function ReportSelection() {
                     ref={dropdownRef}
                     className="absolute mt-1 w-180 bg-white border rounded-lg shadow-lg z-40 max-h-72 overflow-y-auto"
                 >
-                    {filteredReports.length === 0 ? (   
+                    {filteredReports.length === 0 ? (
                         <p className="p-3 text-gray-500">No tests found</p>
                     ) : (
                         filteredReports.map((r) => (
@@ -419,7 +425,7 @@ function SelectBox({ label, value, setValue, options }) {
     return (
         <div className="relative flex flex-col" ref={dropdownRef}>
             <label className="font-medium  ">{label}</label>
-            
+
             <div className="relative ">
                 <input
                     type="text"
@@ -492,11 +498,10 @@ function SelectBox({ label, value, setValue, options }) {
                                             setIsOpen(false);
                                         }
                                     }}
-                                    className={`w-full text-left p-2 text-sm cursor-pointer transition-colors focus:outline-none ${
-                                        isSelected 
-                                            ? "bg-blue-50 text-blue-600 font-medium focus:bg-blue-100" 
+                                    className={`w-full text-left p-2 text-sm cursor-pointer transition-colors focus:outline-none ${isSelected
+                                            ? "bg-blue-50 text-blue-600 font-medium focus:bg-blue-100"
                                             : "text-gray-700 hover:bg-gray-100 focus:bg-gray-100"
-                                    }`}
+                                        }`}
                                 >
                                     {itemText}
                                 </button>
