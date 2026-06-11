@@ -270,7 +270,7 @@ export default function ReportGenerator() {
 
 
   //handle urine-culture report
-  const handleValueChangeForCulture = (name,) => {
+  const handleValueChangeForCulture = (name,value) => {
     setSensitivityData((prev) => ({
       ...prev,
       [name]: value,
