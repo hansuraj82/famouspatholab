@@ -220,14 +220,10 @@ const generatePdf = ({
     }
 
     if (selectedReports.includes("S ALKALINE PHOSHATE")) {
-        console.log('hety');
-
         y = S_ALKALINE_PHOSHATE_Design(doc, y, S_ALKALINE_PHOSHATE_VAL);
     }
 
     if (selectedReports.includes("TOTAL PROTEIN")) {
-        console.log('hey there');
-
         y = TotalProtein_Design(doc, y, totalProteinVal)
     }
 

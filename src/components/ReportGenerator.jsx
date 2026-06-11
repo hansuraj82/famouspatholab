@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import TestForm from "./TestForm";
 import { generatePdf } from "../genPdf/GeneratePdf";
@@ -66,6 +66,33 @@ export default function ReportGenerator() {
   const [refBy, setRefBy] = useState("");
   const [testDate, setTestDate] = useState("");
   const [reportDate, setReportDate] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [doctorList, setDoctorList] = useState([]);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null); // To close dropdown when clicking outside
+
+  // Keep the search input in sync with the selected value when editing starts
+  useEffect(() => {
+    setSearchTerm(refBy);
+  }, [refBy, isEditing]);
+
+  // Optional: Close dropdown if user clicks anywhere else on the screen
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const filteredDoctors = doctorList.filter((doc) => {
+    const docName = typeof doc === "object" ? doc.name : doc;
+    return docName.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("report-selection") || "{}");
@@ -78,6 +105,11 @@ export default function ReportGenerator() {
     setTestDate(saved.testDate || "");
     setReportDate(saved.reportDate || "");
     setSelectedReports(saved.selectedReports || []);
+
+    // 2. Fetch doctors list for the dropdown
+    const savedDoctors = JSON.parse(localStorage.getItem("doctor-list") || "[]");
+    // Handles cases where doctor-list might be an array of strings or an array of objects
+    setDoctorList(savedDoctors);
   }, []);
 
   const [cbcData, setCbcData] = useState({});
@@ -115,7 +147,6 @@ export default function ReportGenerator() {
   const [sPotassiumVal, setSPotassiumVal] = useState("");
   const [sSodiumVal, setSSodiumVal] = useState("");
   const [sCalciumVal, setSCalciumVal] = useState("");
-
 
   const [testValues, setTestValues] = useState({
     ESR: "",
@@ -239,7 +270,7 @@ export default function ReportGenerator() {
 
 
   //handle urine-culture report
-  const handleValueChangeForCulture = (name, value) => {
+  const handleValueChangeForCulture = (name,value) => {
     setSensitivityData((prev) => ({
       ...prev,
       [name]: value,
@@ -484,10 +515,28 @@ export default function ReportGenerator() {
           {/* ⭐ Patient Summary Card */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-300 p-4 mb-6">
 
-            {/* Header */}
-            <h2 className="text-lg font-semibold text-gray-800 mb-3">
-              Patient Summary
-            </h2>
+            {/* Header with Edit/Save Button */}
+            <div className="flex justify-between items-center mb-3">
+              <h2 className="text-lg font-semibold text-gray-800">
+                Patient Summary
+              </h2>
+              <button
+                onClick={() => {
+                  if (isEditing) {
+                    // Optional: Save to localStorage here if you want updates to persist immediately
+                    const currentData = { patientName, age, gender, address, refBy, testDate, reportDate, selectedReports };
+                    localStorage.setItem("report-selection", JSON.stringify(currentData));
+                  }
+                  setIsEditing(!isEditing);
+                }}
+                className={`px-3 py-1 text-xs font-medium rounded-md transition-colors cursor-pointer ${isEditing
+                    ? "bg-green-600 hover:bg-green-700 text-white"
+                    : "bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-200"
+                  }`}
+              >
+                {isEditing ? "Save Changes" : "Edit Details"}
+              </button>
+            </div>
 
             {/* Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-700">
@@ -495,61 +544,238 @@ export default function ReportGenerator() {
               {/* Name */}
               <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
                 <p className="text-xs uppercase text-gray-500 tracking-wide">Name</p>
-                <p className="text-sm font-medium text-gray-800">
-                  {patientName || "Not Provided"}
-                </p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={patientName}
+                    onChange={(e) => setPatientName((e.target.value).toUpperCase())}
+                    className="w-full text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded px-2 py-0.5 focus:outline-none focus:border-blue-500"
+                    placeholder="Enter patient name"
+                  />
+                ) : (
+                  <p className="text-sm font-medium text-gray-800">{patientName || "Not Provided"}</p>
+                )}
               </div>
 
               {/* Gender */}
               <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
                 <p className="text-xs uppercase text-gray-500 tracking-wide">Gender</p>
-                <p className="text-sm font-medium text-gray-800">
-                  {gender || "Not Provided"}
-                </p>
+                {isEditing ? (
+                  <select
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                    className="w-full text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded px-2 py-0.5 focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="M">M</option>
+                    <option value="F">F</option>
+                    <option value="UNKNOWN">UNKNOWN</option>
+                  </select>
+                ) : (
+                  <p className="text-sm font-medium text-gray-800">{gender || "Not Provided"}</p>
+                )}
               </div>
 
               {/* Age */}
               <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
                 <p className="text-xs uppercase text-gray-500 tracking-wide">Age</p>
-                <p className="text-sm font-medium text-gray-800">
-                  {`${age.year || 0}y ${age.month || 0}m ${age.day || 0}d`}
-                </p>
+                {isEditing ? (
+                  <div className="flex gap-1">
+                    <input
+                      type="number"
+                      placeholder="Y"
+                      value={age.year}
+                      onChange={(e) => setAge({ ...age, year: e.target.value })}
+                      className="w-1/3 text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded px-1 py-0.5 text-center focus:outline-none focus:border-blue-500"
+                    />
+                    <input
+                      type="number"
+                      placeholder="M"
+                      value={age.month}
+                      onChange={(e) => setAge({ ...age, month: e.target.value })}
+                      className="w-1/3 text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded px-1 py-0.5 text-center focus:outline-none focus:border-blue-500"
+                    />
+                    <input
+                      type="number"
+                      placeholder="D"
+                      value={age.day}
+                      onChange={(e) => setAge({ ...age, day: e.target.value })}
+                      className="w-1/3 text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded px-1 py-0.5 text-center focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                ) : (
+                  <p className="text-sm font-medium text-gray-800">
+                    {`${age.year || 0}y ${age.month || 0}m ${age.day || 0}d`}
+                  </p>
+                )}
               </div>
 
               {/* Address */}
               <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
                 <p className="text-xs uppercase text-gray-500 tracking-wide">Address</p>
-                <p className="text-sm font-medium text-gray-800">
-                  {address || "Not Provided"}
-                </p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress((e.target.value).toUpperCase())}
+                    className="w-full text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded px-2 py-0.5 focus:outline-none focus:border-blue-500"
+                    placeholder="Enter address"
+                  />
+                ) : (
+                  <p className="text-sm font-medium text-gray-800">{address || "Not Provided"}</p>
+                )}
               </div>
 
               {/* Ref. By */}
-              <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
-                <p className="text-xs uppercase text-gray-500 tracking-wide">Referred By</p>
-                <p className="text-sm font-medium text-gray-800">
-                  {refBy || "Not Provided"}
-                </p>
-              </div>
+{/* Ref. By (Searchable Dropdown) */}
+<div className="p-2 rounded-md bg-gray-50 border border-gray-200 relative" ref={dropdownRef}>
+  <p className="text-xs uppercase text-gray-500 tracking-wide">Referred By</p>
+
+  {isEditing ? (
+    <div className="relative mt-1">
+      {/* Search Input Box */}
+      <input
+        type="text"
+        placeholder="Search Doctor... (or leave blank)"
+        value={searchTerm}
+        onFocus={() => setIsOpen(true)}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+          setRefBy(e.target.value); // Directly updates value if typing custom name
+          setIsOpen(true);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") setIsOpen(false);
+        }}
+        className="w-full text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded px-2 py-0.5 focus:outline-none focus:border-blue-500"
+      />
+
+      {/* Clear/Reset Option Button inside input */}
+      {searchTerm && (
+        <button
+          onClick={() => {
+            setSearchTerm("");
+            setRefBy("");
+          }}
+          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs"
+          type="button"
+        >
+          ✕
+        </button>
+      )}
+
+      {/* Floating Dropdown Results Menu */}
+      {isOpen && (
+        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-40 overflow-y-auto custom-scrollbar flex flex-col">
+          
+          {/* Optional Default Selection (Now a Tabbable Button) */}
+          <button
+            type="button"
+            tabIndex={0}
+            onClick={() => {
+              setRefBy("");
+              setSearchTerm("");
+              setIsOpen(false);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setRefBy("");
+                setSearchTerm("");
+                setIsOpen(false);
+              }
+            }}
+            className="w-full text-left px-3 py-1.5 text-xs text-gray-500 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none border-b border-gray-100 transition-colors"
+          >
+            Self / Direct (None)
+          </button>
+
+          {filteredDoctors.length > 0 ? (
+            filteredDoctors.map((doc, index) => {
+              const docName = typeof doc === "object" ? doc.name : doc;
+              const isSelected = refBy === docName;
+
+              return (
+                <button
+                  key={index}
+                  type="button"
+                  tabIndex={0}
+                  onClick={() => {
+                    setRefBy(docName);
+                    setSearchTerm(docName);
+                    setIsOpen(false);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setRefBy(docName);
+                      setSearchTerm(docName);
+                      setIsOpen(false);
+                    }
+                    if (e.key === "Escape") {
+                      setIsOpen(false);
+                    }
+                  }}
+                  className={`w-full text-left px-3 py-1.5 text-sm transition-colors focus:outline-none ${
+                    isSelected 
+                      ? "bg-blue-50 text-blue-600 font-medium focus:bg-blue-100" 
+                      : "text-gray-700 hover:bg-gray-100 focus:bg-gray-100"
+                  }`}
+                >
+                  {docName}
+                </button>
+              );
+            })
+          ) : (
+            <div className="px-3 py-2 text-xs text-gray-400 italic">
+              No matching doctors found
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  ) : (
+    <p className="text-sm font-medium text-gray-800">
+      {refBy || "Self / Direct"}
+    </p>
+  )}
+</div>
 
               {/* Test Date */}
               <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
                 <p className="text-xs uppercase text-gray-500 tracking-wide">Test Date</p>
-                <p className="text-sm font-medium text-gray-800">
-                  {testDate
-                    ? new Date(testDate).toLocaleDateString("en-GB")
-                    : new Date().toLocaleDateString("en-GB")}
-                </p>
+                {isEditing ? (
+                  <input
+                    type="date"
+                    value={testDate}
+                    onChange={(e) => setTestDate(e.target.value)}
+                    className="w-full text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded px-2 py-0.5 focus:outline-none focus:border-blue-500"
+                  />
+                ) : (
+                  <p className="text-sm font-medium text-gray-800">
+                    {testDate
+                      ? new Date(testDate).toLocaleDateString("en-GB")
+                      : new Date().toLocaleDateString("en-GB")}
+                  </p>
+                )}
               </div>
 
               {/* Report Date */}
               <div className="p-2 rounded-md bg-gray-50 border border-gray-200">
                 <p className="text-xs uppercase text-gray-500 tracking-wide">Report Date</p>
-                <p className="text-sm font-medium text-gray-800">
-                  {reportDate
-                    ? new Date(reportDate).toLocaleDateString("en-GB")
-                    : new Date().toLocaleDateString("en-GB")}
-                </p>
+                {isEditing ? (
+                  <input
+                    type="date"
+                    value={reportDate}
+                    onChange={(e) => setReportDate(e.target.value)}
+                    className="w-full text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded px-2 py-0.5 focus:outline-none focus:border-blue-500"
+                  />
+                ) : (
+                  <p className="text-sm font-medium text-gray-800">
+                    {reportDate
+                      ? new Date(reportDate).toLocaleDateString("en-GB")
+                      : new Date().toLocaleDateString("en-GB")}
+                  </p>
+                )}
               </div>
 
             </div>
